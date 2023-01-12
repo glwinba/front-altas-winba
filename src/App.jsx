@@ -1,4 +1,4 @@
-import { LayoutMain } from './layouts/LayoutMain';
+import LayoutMain  from './layouts/LayoutMain';
 
 function App() {
   return (
