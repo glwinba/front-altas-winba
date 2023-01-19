@@ -21,6 +21,7 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Avatar from "@mui/material/Avatar";
+import { Outlet } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -247,13 +248,12 @@ export default function LayoutMain({ classes }) {
         </List> */}
       </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <br />
-        <br />
-        <br />
-
-        
-      </Box>
+      <div className="bg-gray-100 h-screen">
+        <div className="mt-14 h-screen bg-white">
+          
+          <Outlet/>
+        </div>
+      </div>
     </Box>
   );
 }
