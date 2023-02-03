@@ -21,7 +21,12 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Avatar from "@mui/material/Avatar";
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import Collapse from "@mui/material/Collapse";
+import StarBorder from "@mui/icons-material/StarBorder";
+import ModeIcon from "@mui/icons-material/Mode";
 
 const drawerWidth = 240;
 
@@ -93,11 +98,15 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
-const sideBar1 = ["Usuarios", "Periodos", "Email", "Operador"];
 export default function LayoutMain({ classes }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [openList, setOpenList] = React.useState(true);
+
+  const handleClick = () => {
+    setOpenList(!openList);
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -147,7 +156,7 @@ export default function LayoutMain({ classes }) {
                       className="rounded-full bg-white"
                     />
                   </IconButton>
-                  
+
                   <Menu
                     sx={{ mt: "45px" }}
                     id="menu-appbar"
@@ -172,13 +181,13 @@ export default function LayoutMain({ classes }) {
                   </Menu>
                 </Box>
                 <div className="ml-3">
-                    <div className="text-base font-medium leading-none text-white">
-                      Tom Cook
-                    </div>
-                    <div className="text-xs font-medium leading-none text-gray-100">
-                      tom@example.com
-                    </div>
+                  <div className="text-base font-medium leading-none text-white">
+                    Tom Cook
                   </div>
+                  <div className="text-xs font-medium leading-none text-gray-100">
+                    tom@example.com
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -198,60 +207,53 @@ export default function LayoutMain({ classes }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {sideBar1.map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          <NavLink to="/users">
+            <ListItemButton>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Usuarios" />
+            </ListItemButton>
+          </NavLink>
+
+          <ListItemButton>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Empresas" />
+          </ListItemButton>
+
+          <ListItemButton onClick={handleClick}>
+            <ListItemIcon>
+              <ModeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Actualizaciones" />
+            {openList ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+
+          <Collapse in={openList} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <NavLink to="/updaterfc">
+                <ListItemButton sx={{ pl: 8 }}>
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary="RFC" />
+                </ListItemButton>
+              </NavLink>
+            </List>
+          </Collapse>
         </List>
-        {/* <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
       </Drawer>
 
-      <div className="bg-gray-100 h-screen">
-        <div className="mt-14 h-screen bg-white">
-          
-          <Outlet/>
+      <div
+        className="h-full w-full"
+        style={{ background: "rgb(229, 231, 235)" }}
+      >
+        <div className="mt-24 mb-10 mx-28 h-screen bg-white p-6 rounded-md border border-gray-300 shadow-xl">
+          <div className="h-full">
+            <Outlet />
+          </div>
         </div>
       </div>
     </Box>

@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LayoutMain  from './layouts/LayoutMain';
 import Users from './pages/Users';
+import Updates from './pages/Updates';
+
 
 function App() {
   return (
@@ -9,6 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LayoutMain/>}>
             <Route path='/users' element={<Users/>}/>
+            <Route path='/updaterfc' element={<Updates/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
