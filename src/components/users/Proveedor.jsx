@@ -1,24 +1,30 @@
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
+import Button from "@mui/material/Button";
+import SaveIcon from "@mui/icons-material/Save";
+import axios from "axios";
+import ModalProveedorCreate from "./ModalProveedorCreate";
 
-export default function InputAdornments() {
-  const [age, setAge] = useState("");
+export default function Proveedor() {
   const [password, setPassword] = useState("");
+  const [empresas, setEmpresas] = useState([]);
+  const [rfc, setRfc] = useState("");
+  const [email, setEmail] = useState("");
+  const [razonsocial, setRazonsocial] = useState("");
+  const [empresacontratante, setEmpresacontratante] = useState(empresas[0]);
+  const [openModal, setOpenModal] = useState(false);
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+  const defaultOptions = {
+    options: empresas.length > 0 ? empresas : [],
+    getOptionLabel: (options) => options.nombre
+  }
 
-  function generatePassword(params) {
+  function generatePassword() {
     const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let pass = "";
 
@@ -30,19 +36,36 @@ export default function InputAdornments() {
     return concatenar;
   }
 
-  const top100Films = [
-    { label: "The Shawshank Redemption", year: 1994 },
-    { label: "The Godfather", year: 1972 },
-    { label: "The Godfather: Part II", year: 1974 },
-    { label: "The Dark Knight", year: 2008 },
-    { label: "12 Angry Men", year: 1957 },
-    { label: "Schindler's List", year: 1993 },
-    { label: "Pulp Fiction", year: 1994 },
-  ];
+  function getEmpresas() {
+    axios.get("http://127.0.0.1:5000/empresasallselect").then((res) => {
+      setEmpresas(res.data);
+    });
+  }
+
+  function createUser() {
+    axios
+      .post("http://127.0.0.1:5000/createuser", {
+        RFC: rfc,
+        PASS: password,
+        NOMBRE: razonsocial,
+        EMAIL: email,
+        EmpresaId: empresacontratante
+      })
+      .then((res) => {
+        setOpenModal(true);
+        console.log(res);
+      });
+  }
 
   useEffect(() => {
     setPassword(generatePassword());
+    getEmpresas();
   }, []);
+
+  // Cerrar Modal
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
   return (
     <div>
@@ -56,6 +79,10 @@ export default function InputAdornments() {
               variant="standard"
               color="secondary"
               focused
+              value={rfc}
+              onChange={(e) => {
+                setRfc(e.target.value);
+              }}
               autoFocus
             />
           </div>
@@ -68,6 +95,10 @@ export default function InputAdornments() {
               color="secondary"
               variant="standard"
               focused
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
           </div>
 
@@ -79,6 +110,10 @@ export default function InputAdornments() {
               color="secondary"
               variant="standard"
               focused
+              value={razonsocial}
+              onChange={(e) => {
+                setRazonsocial(e.target.value);
+              }}
             />
           </div>
         </div>
@@ -86,11 +121,23 @@ export default function InputAdornments() {
           <div className="col col-span-3">
             <Autocomplete
               disablePortal
-              id="combo-box-demo"
-              options={top100Films}
-              sx={{ m: 1, width: "100%", paddingRight: '30px' }}
+              {...defaultOptions}
+              value={empresacontratante}
+              multiple={false}
+              sx={{ m: 1, width: "100%", paddingRight: "30px" }}
+              onChange={(e, newValue) => {
+                setEmpresacontratante(parseInt(newValue.id));
+              }}
+              
               renderInput={(params) => (
-                <TextField {...params} label="EMPRESA CONTRATANTE" variant="standard" focused color="secondary"/>
+                <TextField
+                  {...params}
+                  label="EMPRESA CONTRATANTE"
+                  variant="standard"
+                  focused
+                  color="secondary"
+                 
+                />
               )}
             />
           </div>
@@ -121,6 +168,19 @@ export default function InputAdornments() {
           <AccordionDetails></AccordionDetails>
         </Accordion>
       </div>
+      <div className="w-full m-1">
+        <Button
+          onClick={createUser}
+          className="w-full"
+          variant="contained"
+          color="success"
+          endIcon={<SaveIcon />}
+        >
+          Guardar
+        </Button>
+      </div>
+
+      <ModalProveedorCreate open={openModal} rfc={`CCO-${rfc}`} password={password}/>
     </div>
   );
 }
