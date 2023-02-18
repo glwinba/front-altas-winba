@@ -25,8 +25,8 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import StarBorder from "@mui/icons-material/StarBorder";
 import ModeIcon from "@mui/icons-material/Mode";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import FactoryIcon from '@mui/icons-material/Factory';
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import FactoryIcon from "@mui/icons-material/Factory";
 import Loading from "../components/Loading";
 
 const drawerWidth = 240;
@@ -245,17 +245,18 @@ export default function LayoutMain({ classes }) {
           </Collapse>
         </List>
       </Drawer>
-      
+
       <div
-      className="w-full h-full"
-        style={{ background: "rgb(229, 231, 235)",  minHeight: "100vh" }}
+        className="w-full h-full"
+        style={{ background: "rgb(229, 231, 235)", minHeight: "100vh" }}
       >
         {/*<div className="mt-24 mb-10 mx-28 h-full bg-white p-6 rounded-md border border-gray-300 shadow-xl">
              <Outlet /> 
         </div>*/}
-        
-        <Loading/>
 
+        <div>
+          <Loading />
+        </div>
       </div>
     </Box>
   );
