@@ -10,6 +10,9 @@ import SaveIcon from "@mui/icons-material/Save";
 import axios from "axios";
 import ModalProveedorCreate from "./ModalProveedorCreate";
 import MasDetalles from "./MasDetalles";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../actions";
+import Loading from "../Loading";
 
 export default function Proveedor() {
   const [password, setPassword] = useState("");
@@ -18,7 +21,9 @@ export default function Proveedor() {
   const [email, setEmail] = useState("");
   const [razonsocial, setRazonsocial] = useState("");
   const [empresacontratante, setEmpresacontratante] = useState(empresas[0]);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.loading);
 
   const defaultOptions = {
     options: empresas.length > 0 ? empresas : [],
@@ -40,6 +45,7 @@ export default function Proveedor() {
   function getEmpresas() {
     axios.get("http://127.0.0.1:5000/empresasallselect").then((res) => {
       setEmpresas(res.data);
+      dispatch(setLoading(false));
     });
   }
 
@@ -59,6 +65,8 @@ export default function Proveedor() {
   }
 
   useEffect(() => {
+    dispatch(setLoading(true));
+
     setPassword(generatePassword());
     getEmpresas();
   }, []);
@@ -69,123 +77,133 @@ export default function Proveedor() {
   };
 
   return (
-    <div>
-      <div>
-        <div className="grid grid-cols md:grid-cols-2 lg:grid-cols-4">
-          <div className="col">
-            <TextField
-              id="standard-basic"
-              sx={{ m: 1, width: "25ch" }}
-              label="RFC"
-              variant="standard"
-              
-              focused
-              value={rfc}
-              onChange={(e) => {
-                setRfc(e.target.value);
-              }}
-              autoFocus
-            />
-          </div>
-
-          <div className="col">
-            <TextField
-              id="standard-basic"
-              sx={{ m: 1, width: "25ch" }}
-              label="CORREO ELECTRONICO"
-              
-              variant="standard"
-              focused
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-          </div>
-
-          <div className="col col-span-2">
-            <TextField
-              sx={{ m: 1, width: "100%" }}
-              id="standard-basic"
-              label="RAZON SOCIAL"
-              
-              variant="standard"
-              focused
-              value={razonsocial}
-              onChange={(e) => {
-                setRazonsocial(e.target.value);
-              }}
-            />
-          </div>
+    <>
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <Loading />
         </div>
-        <div className="grid grid-cols-4">
-          <div className="col col-span-3">
-            <Autocomplete
-              disablePortal
-              {...defaultOptions}
-              value={empresacontratante}
-              multiple={false}
-              sx={{ m: 1, width: "100%", paddingRight: "30px" }}
-              onChange={(e, newValue) => {
-                setEmpresacontratante(parseInt(newValue.id));
-              }}
-              renderInput={(params) => (
+      ) : (
+        <div>
+          <div>
+            <div className="grid grid-cols md:grid-cols-2 lg:grid-cols-4">
+              <div className="col">
                 <TextField
-                  {...params}
-                  label="EMPRESA CONTRATANTE"
+                  id="standard-basic"
+                  sx={{ m: 1, width: "25ch" }}
+                  label="RFC"
                   variant="standard"
                   focused
-                  
+                  value={rfc}
+                  onChange={(e) => {
+                    setRfc(e.target.value);
+                  }}
+                  autoFocus
                 />
-              )}
-            />
+              </div>
+
+              <div className="col">
+                <TextField
+                  id="standard-basic"
+                  sx={{ m: 1, width: "25ch" }}
+                  label="CORREO ELECTRONICO"
+                  variant="standard"
+                  focused
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="col col-span-2">
+                <TextField
+                  sx={{ m: 1, width: "100%" }}
+                  id="standard-basic"
+                  label="RAZON SOCIAL"
+                  variant="standard"
+                  focused
+                  value={razonsocial}
+                  onChange={(e) => {
+                    setRazonsocial(e.target.value);
+                  }}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-4">
+              <div className="col col-span-3">
+                <Autocomplete
+                  disablePortal
+                  {...defaultOptions}
+                  value={empresacontratante}
+                  multiple={false}
+                  sx={{ m: 1, width: "100%", paddingRight: "30px" }}
+                  onChange={(e, newValue) => {
+                    setEmpresacontratante(parseInt(newValue.id));
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="EMPRESA CONTRATANTE"
+                      variant="standard"
+                      focused
+                    />
+                  )}
+                />
+              </div>
+
+              <div className="col">
+                <TextField
+                  sx={{ m: 1, width: "100%" }}
+                  id="standard-basic"
+                  label="CONTRASEÑA"
+                  variant="standard"
+                  focused
+                  value={password}
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <Accordion sx={{ m: 1, width: "100%" }}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                Configuraciones Avanzadas
+              </AccordionSummary>
+              <AccordionDetails>
+                <MasDetalles />
+              </AccordionDetails>
+            </Accordion>
+          </div>
+          <div className="w-full m-1">
+            <Button
+              onClick={createUser}
+              className="w-full"
+              variant="contained"
+              color="primary"
+              endIcon={<SaveIcon />}
+            >
+              Guardar
+            </Button>
           </div>
 
-          <div className="col">
-            <TextField
-              sx={{ m: 1, width: "100%" }}
-              id="standard-basic"
-              label="CONTRASEÑA"
-              
-              variant="standard"
-              focused
-              value={password}
-              disabled
-            />
-          </div>
+          <ModalProveedorCreate
+            open={openModal}
+            rfc={`CCO-${rfc}`}
+            password={password}
+          />
         </div>
-      </div>
-      <div>
-        <Accordion sx={{ m: 1, width: "100%" }}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            Configuraciones Avanzadas
-          </AccordionSummary>
-          <AccordionDetails>
-            <MasDetalles/>
-          </AccordionDetails>
-        </Accordion>
-      </div>
-      <div className="w-full m-1">
-        <Button
-          onClick={createUser}
-          className="w-full"
-          variant="contained"
-          color="primary"
-          endIcon={<SaveIcon />}
-        >
-          Guardar
-        </Button>
-      </div>
-
-      <ModalProveedorCreate
-        open={openModal}
-        rfc={`CCO-${rfc}`}
-        password={password}
-      />
-    </div>
+      )}
+    </>
   );
 }

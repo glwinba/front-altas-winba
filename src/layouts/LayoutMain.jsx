@@ -27,7 +27,6 @@ import StarBorder from "@mui/icons-material/StarBorder";
 import ModeIcon from "@mui/icons-material/Mode";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import FactoryIcon from "@mui/icons-material/Factory";
-import Loading from "../components/Loading";
 
 const drawerWidth = 240;
 
@@ -103,6 +102,7 @@ export default function LayoutMain({ classes }) {
   const [open, setOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openList, setOpenList] = React.useState(true);
+  
 
   const handleClick = () => {
     setOpenList(!openList);
@@ -250,12 +250,8 @@ export default function LayoutMain({ classes }) {
         className="w-full h-full"
         style={{ background: "rgb(229, 231, 235)", minHeight: "100vh" }}
       >
-        {/*<div className="mt-24 mb-10 mx-28 h-full bg-white p-6 rounded-md border border-gray-300 shadow-xl">
-             <Outlet /> 
-        </div>*/}
-
-        <div>
-          <Loading />
+        <div className="mt-24 mb-10 mx-28 h-full bg-white p-6 rounded-md border border-gray-300 shadow-xl">
+          <Outlet /> 
         </div>
       </div>
     </Box>

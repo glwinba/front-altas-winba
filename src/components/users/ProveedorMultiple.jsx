@@ -13,12 +13,16 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useEffect } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../Loading";
+import { setLoading } from "../../actions";
 
 export default function ProveedorMultiple() {
   const [empresas, setEmpresas] = useState([]);
   const [empresacontratante, setEmpresacontratante] = useState(empresas[0]);
   const [fileData, setFileData] = useState(null);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.loading);
 
   const defaultOptions = {
     options: empresas.length > 0 ? empresas : [],
@@ -28,94 +32,120 @@ export default function ProveedorMultiple() {
   function getEmpresas() {
     axios.get("http://127.0.0.1:5000/empresasallselect").then((res) => {
       setEmpresas(res.data);
+      dispatch(setLoading(false));
     });
   }
 
   function createUserMasive(e) {
-
     e.preventDefault();
 
-
     axios
-      .post("http://127.0.0.1:5000/createusermasive", {
-        file: fileData,
-        EmpresaId: empresacontratante
-      }, {
-        headers: {
-          "Content-Type": "multipart/form-data"
+      .post(
+        "http://127.0.0.1:5000/createusermasive",
+        {
+          file: fileData,
+          EmpresaId: empresacontratante,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      })
+      )
       .then((res) => {
         console.log(res);
       });
   }
 
   useEffect(() => {
+    dispatch(setLoading(true));
     getEmpresas();
   }, []);
   return (
-    <div>
-      <form>
-      <FormLabel>Ingres tu archivo excel: </FormLabel>
-
-        <IconButton
-          color="primary"
-          aria-label="upload picture"
-          component="label"
+    <>
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
         >
-          <input hidden type="file" name="file" onChange={(e) => {setFileData(e.target.files[0])}}/>
-          <BackupIcon />
-        </IconButton>
-        {/* <div className="my-10">
+          <Loading />
+        </div>
+      ) : (
+        <div>
+          <form>
+            <FormLabel>Ingres tu archivo excel: </FormLabel>
+
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="label"
+            >
+              <input
+                hidden
+                type="file"
+                name="file"
+                onChange={(e) => {
+                  setFileData(e.target.files[0]);
+                }}
+              />
+              <BackupIcon />
+            </IconButton>
+            {/* <div className="my-10">
         <TableMultipleProveedor/>
       </div> */}
-        <div className="grid">
-          <div className="col">
-            <Autocomplete
-              disablePortal
-              {...defaultOptions}
-              value={empresacontratante}
-              multiple={false}
-              sx={{ m: 1, width: "100%", paddingRight: "30px" }}
-              onChange={(e, newValue) => {
-                setEmpresacontratante(parseInt(newValue.id));
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="EMPRESA CONTRATANTE"
-                  variant="standard"
-                  focused
+            <div className="grid">
+              <div className="col">
+                <Autocomplete
+                  disablePortal
+                  {...defaultOptions}
+                  value={empresacontratante}
+                  multiple={false}
+                  sx={{ m: 1, width: "100%", paddingRight: "30px" }}
+                  onChange={(e, newValue) => {
+                    setEmpresacontratante(parseInt(newValue.id));
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="EMPRESA CONTRATANTE"
+                      variant="standard"
+                      focused
+                    />
+                  )}
                 />
-              )}
-            />
-          </div>
+              </div>
+            </div>
+            <div>
+              <Accordion sx={{ m: 1, width: "100%" }}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  Configuraciones Avanzadas
+                </AccordionSummary>
+                <AccordionDetails></AccordionDetails>
+              </Accordion>
+            </div>
+            <div className="w-full m-1">
+              <Button
+                onClick={createUserMasive}
+                className="w-full"
+                variant="contained"
+                color="primary"
+                endIcon={<SaveIcon />}
+                type="submit"
+              >
+                Guardar
+              </Button>
+            </div>
+          </form>
         </div>
-        <div>
-          <Accordion sx={{ m: 1, width: "100%" }}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              Configuraciones Avanzadas
-            </AccordionSummary>
-            <AccordionDetails></AccordionDetails>
-          </Accordion>
-        </div>
-        <div className="w-full m-1">
-          <Button
-            onClick={createUserMasive}
-            className="w-full"
-            variant="contained"
-            color="primary"
-            endIcon={<SaveIcon />}
-            type="submit"
-          >
-            Guardar
-          </Button>
-        </div>
-      </form>
-    </div>
+      )}
+    </>
   );
 }

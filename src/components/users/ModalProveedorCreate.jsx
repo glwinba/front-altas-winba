@@ -6,8 +6,26 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Alert from "@mui/material/Alert";
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 export default function ModalProveedorCreate({ open, rfc, password }) {
+  const navigate = useNavigate();
+
+  const showAlert = () => {
+    Swal.fire({
+      // position: "top-end",
+      icon: "success",
+      title: "Usuario Agregado correctamente",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
+  const handleClick = () => {
+    navigate("/users");
+    showAlert();
+  };
   return (
     <div>
       <Dialog open={open} maxWidth="xs">
@@ -52,6 +70,7 @@ export default function ModalProveedorCreate({ open, rfc, password }) {
             sx={{ marginTop: "2%" }}
             color="success"
             fullWidth
+            onClick={handleClick}
           >
             Aceptar
           </Button>

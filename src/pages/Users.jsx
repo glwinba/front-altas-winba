@@ -5,9 +5,14 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
+import Loading from "../components/Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../actions";
 
 function Users() {
   const [users, setUsers] = useState([]);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.loading);
 
   const columns = [
     { name: "NOMBREUSUARIO", options: { filter: false } },
@@ -20,11 +25,10 @@ function Users() {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <>
-              
               <Button
                 variant="contained"
                 color="primary"
-                sx={{marginX: "2px"}}
+                sx={{ marginX: "2px" }}
                 onClick={() => {
                   alert("Hola mundos");
                 }}
@@ -33,7 +37,7 @@ function Users() {
               </Button>
               <Button
                 variant="contained"
-                sx={{backgroundColor: "red", marginX: "2px"}}
+                sx={{ backgroundColor: "red", marginX: "2px" }}
                 onClick={() => {
                   alert("Hola mundos");
                 }}
@@ -57,8 +61,11 @@ function Users() {
   };
 
   const getUsers = () => {
+    dispatch(setLoading(true));
+
     axios.get("http://127.0.0.1:5000/getUsers").then((res) => {
       setUsers(res.data);
+      dispatch(setLoading(false));
     });
   };
 
@@ -68,28 +75,43 @@ function Users() {
 
   return (
     <>
-      <div className="flex flex-1 items-center justify-between">
-        <div className="flex w-full justify-end">
-          <div className="mb-4">
-            <NavLink to="/createusers">
-              <Button
-                color="success"
-                variant="contained"
-                endIcon={<PersonAddAltIcon />}
-              >
-                Añadir Usuario
-              </Button>
-            </NavLink>
-          </div>
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <Loading />
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="flex flex-1 items-center justify-between">
+            <div className="flex w-full justify-end">
+              <div className="mb-4">
+                <NavLink to="/createusers">
+                  <Button
+                    color="success"
+                    variant="contained"
+                    endIcon={<PersonAddAltIcon />}
+                  >
+                    Añadir Usuario
+                  </Button>
+                </NavLink>
+              </div>
+            </div>
+          </div>
 
-      <MUIDataTable
-        title={"Lista de usuarios"}
-        data={users}
-        columns={columns}
-        options={options}
-      />
+          <MUIDataTable
+            title={"Lista de usuarios"}
+            data={users}
+            columns={columns}
+            options={options}
+          />
+        </>
+      )}
     </>
   );
 }
