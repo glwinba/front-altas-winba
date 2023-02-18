@@ -1,72 +1,97 @@
+import { Button } from "@mui/material";
+import MUIDataTable from "mui-datatables";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
+import { NavLink } from "react-router-dom";
 
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Proveedor from '../components/users/Proveedor';
+function Users() {
+  const [users, setUsers] = useState([]);
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const columns = [
+    { name: "NOMBREUSUARIO", options: { filter: false } },
+    { name: "NOMBRE", options: { filter: false } },
+    { name: "EMAIL", options: { filter: false } },
+    {
+      name: "ACCIONES",
+      options: {
+        filter: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <>
+              
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{marginX: "2px"}}
+                onClick={() => {
+                  alert("Hola mundos");
+                }}
+              >
+                Editar
+              </Button>
+              <Button
+                variant="contained"
+                sx={{backgroundColor: "red", marginX: "2px"}}
+                onClick={() => {
+                  alert("Hola mundos");
+                }}
+              >
+                Eliminar
+              </Button>
+            </>
+          );
+        },
+      },
+    },
+  ];
+
+  const options = {
+    tableBodyMaxHeight: "auto",
+    download: false,
+    viewColumns: false,
+    filter: false,
+    print: false,
+    selectableRows: "none",
+  };
+
+  const getUsers = () => {
+    axios.get("http://127.0.0.1:5000/getUsers").then((res) => {
+      setUsers(res.data);
+    });
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
+    <>
+      <div className="flex flex-1 items-center justify-between">
+        <div className="flex w-full justify-end">
+          <div className="mb-4">
+            <NavLink to="/createusers">
+              <Button
+                color="success"
+                variant="contained"
+                endIcon={<PersonAddAltIcon />}
+              >
+                Añadir Usuario
+              </Button>
+            </NavLink>
+          </div>
+        </div>
+      </div>
+
+      <MUIDataTable
+        title={"Lista de usuarios"}
+        data={users}
+        columns={columns}
+        options={options}
+      />
+    </>
   );
 }
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-export default function BasicTabs() {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 2, borderColor: 'rgb(229, 231, 235)' }}>
-      <div className="title-main">AÑADIR USUARIOS</div>
-
-        <Tabs textColor="secondary" indicatorColor="secondary" sx={{ paddingLeft: '5%' }} value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Proveedor" sx={{ fontSize: 'smaller', textTransform: 'capitalize' }} {...a11yProps(0)} />
-          <Tab label="Cliente" sx={{ fontSize: 'small', textTransform: 'capitalize' }} {...a11yProps(1)} />
-          <Tab label="Administrador" sx={{ fontSize: 'small', textTransform: 'capitalize' }} {...a11yProps(2)} />
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-        <Proveedor/>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-    </Box>
-  );
-}
+export default Users;

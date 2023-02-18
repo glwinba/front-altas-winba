@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
 import axios from "axios";
 import ModalProveedorCreate from "./ModalProveedorCreate";
+import MasDetalles from "./MasDetalles";
 
 export default function Proveedor() {
   const [password, setPassword] = useState("");
@@ -21,8 +22,8 @@ export default function Proveedor() {
 
   const defaultOptions = {
     options: empresas.length > 0 ? empresas : [],
-    getOptionLabel: (options) => options.nombre
-  }
+    getOptionLabel: (options) => options.nombre,
+  };
 
   function generatePassword() {
     const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -49,7 +50,7 @@ export default function Proveedor() {
         PASS: password,
         NOMBRE: razonsocial,
         EMAIL: email,
-        EmpresaId: empresacontratante
+        EmpresaId: empresacontratante,
       })
       .then((res) => {
         setOpenModal(true);
@@ -77,7 +78,7 @@ export default function Proveedor() {
               sx={{ m: 1, width: "25ch" }}
               label="RFC"
               variant="standard"
-              color="secondary"
+              
               focused
               value={rfc}
               onChange={(e) => {
@@ -92,7 +93,7 @@ export default function Proveedor() {
               id="standard-basic"
               sx={{ m: 1, width: "25ch" }}
               label="CORREO ELECTRONICO"
-              color="secondary"
+              
               variant="standard"
               focused
               value={email}
@@ -107,7 +108,7 @@ export default function Proveedor() {
               sx={{ m: 1, width: "100%" }}
               id="standard-basic"
               label="RAZON SOCIAL"
-              color="secondary"
+              
               variant="standard"
               focused
               value={razonsocial}
@@ -128,15 +129,13 @@ export default function Proveedor() {
               onChange={(e, newValue) => {
                 setEmpresacontratante(parseInt(newValue.id));
               }}
-              
               renderInput={(params) => (
                 <TextField
                   {...params}
                   label="EMPRESA CONTRATANTE"
                   variant="standard"
                   focused
-                  color="secondary"
-                 
+                  
                 />
               )}
             />
@@ -147,7 +146,7 @@ export default function Proveedor() {
               sx={{ m: 1, width: "100%" }}
               id="standard-basic"
               label="CONTRASEÑA"
-              color="secondary"
+              
               variant="standard"
               focused
               value={password}
@@ -165,7 +164,9 @@ export default function Proveedor() {
           >
             Configuraciones Avanzadas
           </AccordionSummary>
-          <AccordionDetails></AccordionDetails>
+          <AccordionDetails>
+            <MasDetalles/>
+          </AccordionDetails>
         </Accordion>
       </div>
       <div className="w-full m-1">
@@ -173,14 +174,18 @@ export default function Proveedor() {
           onClick={createUser}
           className="w-full"
           variant="contained"
-          color="success"
+          color="primary"
           endIcon={<SaveIcon />}
         >
           Guardar
         </Button>
       </div>
 
-      <ModalProveedorCreate open={openModal} rfc={`CCO-${rfc}`} password={password}/>
+      <ModalProveedorCreate
+        open={openModal}
+        rfc={`CCO-${rfc}`}
+        password={password}
+      />
     </div>
   );
 }

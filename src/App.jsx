@@ -1,7 +1,9 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LayoutMain  from './layouts/LayoutMain';
-import Users from './pages/Users';
-import Updates from './pages/Updates';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LayoutMain from "./layouts/LayoutMain";
+import Users from "./pages/Users";
+import Updates from "./pages/Updates";
+import Login from "./pages/Login";
+import CreateUsers from "./pages/CreateUsers";
 
 
 function App() {
@@ -9,15 +11,16 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LayoutMain/>}>
-            <Route path='/users' element={<Users/>}/>
-            <Route path='/updaterfc' element={<Updates/>}/>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<LayoutMain />}>
+            <Route path="/users" element={<Users />} />
+            <Route path="/createusers" element={<CreateUsers />}/>
+            <Route path="/updaterfc" element={<Updates />} />
           </Route>
         </Routes>
       </BrowserRouter>
-      
     </>
-  )
+  );
 }
 
-export default App
+export default App;

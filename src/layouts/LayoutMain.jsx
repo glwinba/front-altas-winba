@@ -14,12 +14,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import Avatar from "@mui/material/Avatar";
 import { NavLink, Outlet } from "react-router-dom";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -27,6 +25,9 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import StarBorder from "@mui/icons-material/StarBorder";
 import ModeIcon from "@mui/icons-material/Mode";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import FactoryIcon from '@mui/icons-material/Factory';
+import Loading from "../components/Loading";
 
 const drawerWidth = 240;
 
@@ -69,7 +70,7 @@ const AppBar = styled(MuiAppBar, {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  background: "#9F0808",
+  background: "#010101",
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
@@ -85,7 +86,6 @@ const Drawer = styled(MuiDrawer, {
 })(({ theme, open }) => ({
   width: drawerWidth,
   flexShrink: 0,
-  whiteSpace: "nowrap",
   boxSizing: "border-box",
   ...(open && {
     ...openedMixin(theme),
@@ -210,7 +210,7 @@ export default function LayoutMain({ classes }) {
           <NavLink to="/users">
             <ListItemButton>
               <ListItemIcon>
-                <InboxIcon />
+                <ManageAccountsIcon />
               </ListItemIcon>
               <ListItemText primary="Usuarios" />
             </ListItemButton>
@@ -218,7 +218,7 @@ export default function LayoutMain({ classes }) {
 
           <ListItemButton>
             <ListItemIcon>
-              <InboxIcon />
+              <FactoryIcon />
             </ListItemIcon>
             <ListItemText primary="Empresas" />
           </ListItemButton>
@@ -245,16 +245,17 @@ export default function LayoutMain({ classes }) {
           </Collapse>
         </List>
       </Drawer>
-
+      
       <div
-        className="h-full w-full"
-        style={{ background: "rgb(229, 231, 235)" }}
+      className="w-full h-full"
+        style={{ background: "rgb(229, 231, 235)",  minHeight: "100vh" }}
       >
-        <div className="mt-24 mb-10 mx-28 h-screen bg-white p-6 rounded-md border border-gray-300 shadow-xl">
-          <div className="h-full">
-            <Outlet />
-          </div>
-        </div>
+        {/*<div className="mt-24 mb-10 mx-28 h-full bg-white p-6 rounded-md border border-gray-300 shadow-xl">
+             <Outlet /> 
+        </div>*/}
+        
+        <Loading/>
+
       </div>
     </Box>
   );
