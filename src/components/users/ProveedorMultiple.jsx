@@ -1,5 +1,5 @@
 import IconButton from "@mui/material/IconButton";
-import { FormLabel, TableContainer } from "@mui/material";
+import { FormLabel } from "@mui/material";
 import BackupIcon from "@mui/icons-material/Backup";
 import SaveIcon from "@mui/icons-material/Save";
 import Button from "@mui/material/Button";
@@ -15,14 +15,18 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading";
-import { setLoading } from "../../actions";
+import { setDataUsers, setLoading } from "../../actions";
+import ModalProveedorCreateMultiple from "./ModalProveedorCreateMultiple";
 
 export default function ProveedorMultiple() {
   const [empresas, setEmpresas] = useState([]);
   const [empresacontratante, setEmpresacontratante] = useState(empresas[0]);
+  const [openModal, setOpenModal] = useState(false);
   const [fileData, setFileData] = useState(null);
-  const dispatch = useDispatch();
   const loading = useSelector((state) => state.loading);
+  const dispatch = useDispatch();
+  const dataUsers = useSelector((state) => state.data_users);
+
 
   const defaultOptions = {
     options: empresas.length > 0 ? empresas : [],
@@ -43,24 +47,45 @@ export default function ProveedorMultiple() {
       .post(
         "http://127.0.0.1:5000/createusermasive",
         {
-          file: fileData,
+          dataExcel: dataUsers,
           EmpresaId: empresacontratante,
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        setOpenModal(true);
+      });
+  }
+
+  async function readExcel(){
+    dispatch(setLoading(true));
+
+    const dataExcel = await axios
+      .post(
+        "http://127.0.0.1:5000/readExcel",
+        {
+          file: fileData
         },
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         }
-      )
-      .then((res) => {
-        console.log(res);
-      });
+      );
+
+      dispatch(setDataUsers(dataExcel.data))
+    dispatch(setLoading(false));
+
+    
   }
+
+  
 
   useEffect(() => {
     dispatch(setLoading(true));
     getEmpresas();
   }, []);
+
   return (
     <>
       {loading ? (
@@ -94,9 +119,11 @@ export default function ProveedorMultiple() {
               />
               <BackupIcon />
             </IconButton>
-            {/* <div className="my-10">
-        <TableMultipleProveedor/>
-      </div> */}
+            <Button variant="contained" onClick={readExcel}>Cargar</Button>
+            <div className="my-10">
+              <TableMultipleProveedor opciones={true} dataUsers={dataUsers}/>
+
+            </div>
             <div className="grid">
               <div className="col">
                 <Autocomplete
@@ -146,6 +173,7 @@ export default function ProveedorMultiple() {
           </form>
         </div>
       )}
+      <ModalProveedorCreateMultiple open={openModal}/>
     </>
   );
 }

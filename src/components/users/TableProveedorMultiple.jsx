@@ -6,36 +6,23 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteUserData } from "../../actions";
+import { Button } from "@mui/material";
 import { useEffect } from "react";
-function createData(name = "", calories = 0, fat = 0, carbs = 0, protein = 0) {
-  return { name, calories, fat, carbs, protein };
-}
 
-export default function TableMultipleProveedor() {
-  const [dataProveedorMultiple, setDataProveedorMultiple] = useState([]);
+export default function TableMultipleProveedor({ opciones, dataUsers }) {
+  const dispatch = useDispatch();
+
+  const deleteUser = (user) => {
+    // dispatch(deleteUserData(user));
+    console.log(user)
+  }
 
   useEffect(() => {
-    setDataProveedorMultiple([
-      createData(
-        "CRISTOPH RODRIGUEZ PRADO",
-        "ROPC031223D62",
-        "cristoph.2312@gmail.com"
-      ),
-      createData(
-        "PEDRO RODRIGUEZ PRADO",
-        "ROPP080105MD3",
-        "pedro.05@gmail.com"
-      ),
-      createData(
-        "MARIBEL RODRIGUEZ PRADO",
-        "ROPM110818D61",
-        "mari.2312@gmail.com"
-      ),
-    ]);
-  }, []);
+    
+  }, [])
+  
 
   return (
     <TableContainer component={Paper}>
@@ -45,29 +32,33 @@ export default function TableMultipleProveedor() {
             <TableCell>Razón Social</TableCell>
             <TableCell align="right">RFC</TableCell>
             <TableCell align="right">Correo</TableCell>
-            <TableCell align="right">Opciones</TableCell>
+            {opciones ? <TableCell align="right">Opciones</TableCell> : <></>}
           </TableRow>
         </TableHead>
         <TableBody>
-          {dataProveedorMultiple.map((row, index) => (
+          {dataUsers.map((row, index) => (
             <TableRow
-              key={row.name}
+              key={index}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.RAZONSOCIALPROVEEDOR}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">
-                <IconButton
-                  sx={{ color: "red" }}
-                  aria-label="delete"
-                  size="small"
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </TableCell>
+              <TableCell align="right">{row.RFCPROVEEDOR}</TableCell>
+              <TableCell align="right">{row.EMAIL}</TableCell>
+              {/* {opciones ? ( */}
+                <TableCell align="right">
+                  <Button
+                    variant="contained"
+                    sx={{ backgroundColor: "red", marginX: "2px" }}
+                    onClick={deleteUser(row.RFCPROVEEDOR)}
+                  >
+                    Eliminar
+                  </Button>
+                </TableCell>
+              {/* ) : (
+                <></>
+               )} */}
             </TableRow>
           ))}
         </TableBody>

@@ -21,7 +21,7 @@ export default function Proveedor() {
   const [email, setEmail] = useState("");
   const [razonsocial, setRazonsocial] = useState("");
   const [empresacontratante, setEmpresacontratante] = useState(empresas[0]);
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.loading);
 

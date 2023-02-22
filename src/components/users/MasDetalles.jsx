@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import Periodos from './Periodos';
 
 function TabPanel(props) {
     const { children, value, index, valueProveedor, ...other } = props;
@@ -62,7 +63,7 @@ export default function MasDetalles() {
             <h1>Añadir empresas</h1>
         </TabPanel>
         <TabPanel value={valueSettings} index={1}>
-            <h1>Añadir periodos</h1>
+            <Periodos/>
         </TabPanel>
         <TabPanel value={valueSettings} index={2}>
             <h1>Añadir categorias</h1>

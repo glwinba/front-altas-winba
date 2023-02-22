@@ -7,18 +7,17 @@ import { NavLink } from "react-router-dom";
 import Loading from "../components/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../actions";
-import BusinessIcon from '@mui/icons-material/Business';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 
-function Empresas() {
-  const [empresas, setEmpresas] = useState([]);
+function Grupos() {
+  const [grupos, setGrupos] = useState([]);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.loading);
 
   const columns = [
     { name: "id", options: { filter: false, display: false } },
-    { name: "rfc", options: { filter: false } },
     { name: "nombre", options: { filter: false } },
-    { name: "GrupoId", options: { filter: false } },
+    { name: "comentarios", options: { filter: false } },
     {
       name: "ACCIONES",
       options: {
@@ -35,7 +34,7 @@ function Empresas() {
                   Editar
                 </Button>
               </NavLink>
-              
+
               <Button
                 variant="contained"
                 sx={{ backgroundColor: "red", marginX: "2px" }}
@@ -61,17 +60,17 @@ function Empresas() {
     selectableRows: "none",
   };
 
-  const getEmpresa = () => {
+  const getGrupos = () => {
     dispatch(setLoading(true));
 
-    axios.get("http://127.0.0.1:5000/getEmpresas").then((res) => {
-      setEmpresas(res.data);
+    axios.get("http://127.0.0.1:5000/getGrupos").then((res) => {
+      setGrupos(res.data);
       dispatch(setLoading(false));
     });
   };
 
   useEffect(() => {
-    getEmpresa();
+    getGrupos();
   }, []);
 
   return (
@@ -96,9 +95,9 @@ function Empresas() {
                   <Button
                     color="success"
                     variant="contained"
-                    endIcon={<BusinessIcon />}
+                    endIcon={<ApartmentIcon />}
                   >
-                    Añadir Empresa
+                    Añadir Grupo
                   </Button>
                 </NavLink>
               </div>
@@ -106,8 +105,8 @@ function Empresas() {
           </div>
 
           <MUIDataTable
-            title={"Lista de empresas"}
-            data={empresas}
+            title={"Lista de grupos"}
+            data={grupos}
             columns={columns}
             options={options}
           />
@@ -117,4 +116,4 @@ function Empresas() {
   );
 }
 
-export default Empresas;
+export default Grupos;

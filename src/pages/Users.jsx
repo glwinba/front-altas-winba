@@ -15,6 +15,7 @@ function Users() {
   const loading = useSelector((state) => state.loading);
 
   const columns = [
+    { name: "UUID", options: { filter: false, display: false } },
     { name: "NOMBREUSUARIO", options: { filter: false } },
     { name: "NOMBRE", options: { filter: false } },
     { name: "EMAIL", options: { filter: false } },
@@ -25,21 +26,21 @@ function Users() {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <>
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ marginX: "2px" }}
-                onClick={() => {
-                  alert("Hola mundos");
-                }}
-              >
-                Editar
-              </Button>
+              <NavLink to={"/updateuser/" + tableMeta.rowData[0]}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginX: "2px" }}
+                >
+                  Editar
+                </Button>
+              </NavLink>
+              
               <Button
                 variant="contained"
                 sx={{ backgroundColor: "red", marginX: "2px" }}
                 onClick={() => {
-                  alert("Hola mundos");
+                  console.log(tableMeta.rowData[0]);
                 }}
               >
                 Eliminar
