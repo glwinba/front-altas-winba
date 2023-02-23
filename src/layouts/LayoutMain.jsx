@@ -27,6 +27,7 @@ import ModeIcon from "@mui/icons-material/Mode";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import BusinessIcon from '@mui/icons-material/Business';
 import ApartmentIcon from '@mui/icons-material/Apartment';
+import Loading from "../components/Loading";
 
 const drawerWidth = 240;
 
@@ -102,7 +103,7 @@ export default function LayoutMain({ classes }) {
   const [open, setOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openList, setOpenList] = React.useState(true);
-
+  // const loading = 
   const handleClick = () => {
     setOpenList(!openList);
   };
@@ -261,7 +262,9 @@ export default function LayoutMain({ classes }) {
         style={{ background: "rgb(229, 231, 235)", minHeight: "100vh" }}
       >
         <div className="mt-24 mb-10 mx-28 h-full bg-white p-6 rounded-md border border-gray-300 shadow-xl">
+          {/* {loading ? () : ()} */}
           <Outlet />
+          {/* <Loading/> */}
         </div>
       </div>
     </Box>

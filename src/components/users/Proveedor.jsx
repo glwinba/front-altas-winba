@@ -92,7 +92,7 @@ export default function Proveedor() {
       ) : (
         <div>
           <div>
-            <div className="grid grid-cols md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4">
               <div className="col">
                 <TextField
                   id="standard-basic"
@@ -169,6 +169,38 @@ export default function Proveedor() {
                   disabled
                 />
               </div>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4">
+              <div className="col col-span-2">
+                <TextField
+                  id="standard-basic"
+                  sx={{ m: 1, width: "90%", marginX: "10px" }}
+                  label="CORREO CONTRATANTE 1"
+                  variant="standard"
+                  focused
+                  value={rfc}
+                  onChange={(e) => {
+                    setRfc(e.target.value);
+                  }}
+                  autoFocus
+                />
+              </div>
+
+              <div className="col col-span-2">
+                <TextField
+                  id="standard-basic"
+                  sx={{ m: 1, width: "100%", marginX: "10px" }}
+                  label="CORREO CONTRATANTE 2"
+                  variant="standard"
+                  focused
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </div>
+
+        
             </div>
           </div>
           <div>

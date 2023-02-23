@@ -14,9 +14,12 @@ export const userReducer = (state = initialState, action) => {
       return { ...state, data_users: action.payload };
 
     case DELETE_USER_DATA:
-      const deleteUser = state.data_users.find((user) => user.RFCPROVEEDOR === action.payload);
-      return state.data_users.splice(state.data_users.indexOf(deleteUser), 1);
-    
+      // console.log(action.payload)
+      // let deleteUser = state.data_users.find((user) => user.RFCPROVEEDOR === action.payload);
+      // let estado = state.data_users.splice(state.data_users.indexOf(deleteUser), 1);
+      // console.log(estado)
+
+      return { ...state, data_users: state.data_users.filter(({ RFCPROVEEDOR }) => RFCPROVEEDOR !== action.payload) }
     default:
       return state;
   }

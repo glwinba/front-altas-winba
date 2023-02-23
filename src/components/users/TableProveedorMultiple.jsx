@@ -15,8 +15,7 @@ export default function TableMultipleProveedor({ opciones, dataUsers }) {
   const dispatch = useDispatch();
 
   const deleteUser = (user) => {
-    // dispatch(deleteUserData(user));
-    console.log(user)
+    dispatch(deleteUserData(user));
   }
 
   useEffect(() => {
@@ -46,19 +45,21 @@ export default function TableMultipleProveedor({ opciones, dataUsers }) {
               </TableCell>
               <TableCell align="right">{row.RFCPROVEEDOR}</TableCell>
               <TableCell align="right">{row.EMAIL}</TableCell>
-              {/* {opciones ? ( */}
+              {opciones ? (
                 <TableCell align="right">
                   <Button
                     variant="contained"
                     sx={{ backgroundColor: "red", marginX: "2px" }}
-                    onClick={deleteUser(row.RFCPROVEEDOR)}
+                    onClick={() => {
+                      deleteUser(row.RFCPROVEEDOR)
+                    }}
                   >
                     Eliminar
                   </Button>
                 </TableCell>
-              {/* ) : (
+              ) : (
                 <></>
-               )} */}
+               )} 
             </TableRow>
           ))}
         </TableBody>
