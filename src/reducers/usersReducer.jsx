@@ -1,8 +1,8 @@
-import { DELETE_USER_DATA, SET_DATAUSERS, SET_LOADING } from "../actions/types";
+import { DELETE_USER_DATA, EDIT_USER_DATA, SET_DATAUSERS, SET_LOADING } from "../actions/types";
 
 const initialState = {
   loading: false,
-  data_users: []
+  data_users: [],
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -14,12 +14,21 @@ export const userReducer = (state = initialState, action) => {
       return { ...state, data_users: action.payload };
 
     case DELETE_USER_DATA:
-      // console.log(action.payload)
-      // let deleteUser = state.data_users.find((user) => user.RFCPROVEEDOR === action.payload);
-      // let estado = state.data_users.splice(state.data_users.indexOf(deleteUser), 1);
-      // console.log(estado)
+      return {
+        ...state,
+        data_users: state.data_users.filter(
+          ({ RFCPROVEEDOR }) => RFCPROVEEDOR !== action.payload
+        ),
+      };
 
-      return { ...state, data_users: state.data_users.filter(({ RFCPROVEEDOR }) => RFCPROVEEDOR !== action.payload) }
+    case EDIT_USER_DATA:
+      const { RFCPROVEEDOR, RAZONSOCIALPROVEEDOR, EMAIL } = action.payload;
+      const findUser = state.data_users.find((user) => user.RFCPROVEEDOR === RFCPROVEEDOR)
+      findUser.RFCPROVEEDOR = RFCPROVEEDOR;
+      findUser.RAZONSOCIALPROVEEDOR = RAZONSOCIALPROVEEDOR;
+      findUser.EMAIL = EMAIL;
+      return { ...state, data_users: findUser };
+
     default:
       return state;
   }

@@ -1,3 +1,4 @@
 export const SET_LOADING = 'SET_LOADING';
 export const SET_DATAUSERS = 'SET_DATAUSERS';
 export const DELETE_USER_DATA = 'DELETE_USER_DATA';
+export const EDIT_USER_DATA = 'EDIT_USER_DATA';

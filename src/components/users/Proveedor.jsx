@@ -20,6 +20,8 @@ export default function Proveedor() {
   const [rfc, setRfc] = useState("");
   const [email, setEmail] = useState("");
   const [razonsocial, setRazonsocial] = useState("");
+  const [correocontratante1, setCorreoContratante1] = useState("");
+  const [correocontratante2, setCorreoContratante2] = useState("");
   const [empresacontratante, setEmpresacontratante] = useState(empresas[0]);
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
@@ -57,6 +59,8 @@ export default function Proveedor() {
         NOMBRE: razonsocial,
         EMAIL: email,
         EmpresaId: empresacontratante,
+        correocontratante1: correocontratante1,
+        correocontratante2: correocontratante2,
       })
       .then((res) => {
         setOpenModal(true);
@@ -178,11 +182,10 @@ export default function Proveedor() {
                   label="CORREO CONTRATANTE 1"
                   variant="standard"
                   focused
-                  value={rfc}
+                  value={correocontratante1}
                   onChange={(e) => {
-                    setRfc(e.target.value);
+                    setCorreoContratante1(e.target.value);
                   }}
-                  autoFocus
                 />
               </div>
 
@@ -193,14 +196,12 @@ export default function Proveedor() {
                   label="CORREO CONTRATANTE 2"
                   variant="standard"
                   focused
-                  value={email}
+                  value={correocontratante2}
                   onChange={(e) => {
-                    setEmail(e.target.value);
+                    setCorreoContratante2(e.target.value);
                   }}
                 />
               </div>
-
-        
             </div>
           </div>
           <div>
