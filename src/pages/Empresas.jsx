@@ -92,7 +92,7 @@ function Empresas() {
           <div className="flex flex-1 items-center justify-between">
             <div className="flex w-full justify-end">
               <div className="mb-4">
-                <NavLink to="/createusers">
+                <NavLink to="/createcompanies">
                   <Button
                     color="success"
                     variant="contained"

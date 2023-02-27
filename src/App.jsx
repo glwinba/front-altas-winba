@@ -6,6 +6,8 @@ import CreateUsers from "./pages/CreateUsers";
 import Empresas from "./pages/Empresas";
 import Updateuser from "./pages/Updateuser";
 import Grupos from "./pages/Grupos";
+import CreateGroups from "./pages/CreateGroups";
+import CreateCompanies from "./pages/CreateCompany";
 
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
           <Route path="/" element={<LayoutMain />}>
             <Route path="/users" element={<Users />} />
             <Route path="/createusers" element={<CreateUsers />}/>
+            <Route path="/creategroups" element={<CreateGroups />}/>
+            <Route path="/createcompanies" element={<CreateCompanies />}/>
             <Route path="/empresas" element={<Empresas />} />
             <Route path="/grupos" element={<Grupos />} />
             <Route path="/updateuser/:id" element={<Updateuser />} />
