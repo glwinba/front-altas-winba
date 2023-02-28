@@ -18,11 +18,20 @@ function Empresas() {
     { name: "id", options: { filter: false, display: false } },
     { name: "rfc", options: { filter: false } },
     { name: "nombre", options: { filter: false } },
-    { name: "GrupoId", options: { filter: false } },
+    { name: "Grupo", options: {
+      filter: false,
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return (
+          <>
+            {value.nombre}
+          </>
+        );
+      },
+    }, },
     {
       name: "ACCIONES",
       options: {
-        filter: true,
+        filter: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <>
@@ -40,7 +49,7 @@ function Empresas() {
                 variant="contained"
                 sx={{ backgroundColor: "red", marginX: "2px" }}
                 onClick={() => {
-                  console.log(tableMeta.rowData[0]);
+                  console.log(value);
                 }}
               >
                 Eliminar

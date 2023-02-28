@@ -5,9 +5,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Proveedor from '../components/users/Proveedor';
 import { useState } from 'react';
-import ProveedorMultiple from '../components/users/ProveedorMultiple';
 import IndividualCreateGroup from '../components/groups/IndividualCreateGroup';
 
 function TabPanel(props) {
@@ -36,14 +34,7 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-function a11yPropsProv(index) {
+function allyPropsGroup(index) {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
@@ -65,8 +56,8 @@ export default function CreateGroups() {
 
       </Box>
         <Tabs value={valueProveedor} onChange={handleChangeProveedor} aria-label="basic tabs example">
-          <Tab label="Individual" {...a11yPropsProv(0)} />
-          <Tab label="Multiple" {...a11yPropsProv(1)} />
+          <Tab label="Individual" {...allyPropsGroup(0)} />
+          <Tab label="Multiple" {...allyPropsGroup(1)} />
         </Tabs>
         <TabPanel value={valueProveedor} index={0}>
             <IndividualCreateGroup/>
