@@ -13,16 +13,15 @@ import MasDetalles from "./MasDetalles";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../../actions";
 import Loading from "../Loading";
+import ClienteCreate from "./modals/ClienteCreate";
 
-export default function Proveedor() {
+export default function Cliente() {
   const [nombre, setNombre] = useState("");
   const [password, setPassword] = useState("");
   const [empresas, setEmpresas] = useState([]);
   const [rfc, setRfc] = useState("");
   const [email, setEmail] = useState("");
   const [razonsocial, setRazonsocial] = useState("");
-  const [correocontratante1, setCorreoContratante1] = useState("");
-  const [correocontratante2, setCorreoContratante2] = useState("");
   const [empresacontratante, setEmpresacontratante] = useState(empresas[0]);
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
@@ -52,16 +51,14 @@ export default function Proveedor() {
     });
   }
 
-  function createUser() {
+  function createUserCliente() {
     axios
-      .post("http://127.0.0.1:5000/createuser", {
+      .post("http://127.0.0.1:5000/createUserCliente", {
         RFC: rfc,
         PASS: password,
         NOMBRE: razonsocial,
         EMAIL: email,
-        EmpresaId: empresacontratante,
-        correocontratante1: correocontratante1,
-        correocontratante2: correocontratante2,
+        EmpresaId: empresacontratante
       })
       .then((res) => {
         setNombre(res.data.UsuarioNombreUsuario)
@@ -92,8 +89,7 @@ export default function Proveedor() {
       ) : (
         <div>
           <div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4">
-              <div className="col">
+            <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
                 <TextField
                   id="standard-basic"
                   sx={{ m: 1, width: "25ch" }}
@@ -106,9 +102,7 @@ export default function Proveedor() {
                   }}
                   autoFocus
                 />
-              </div>
 
-              <div className="col">
                 <TextField
                   id="standard-basic"
                   sx={{ m: 1, width: "25ch" }}
@@ -120,9 +114,8 @@ export default function Proveedor() {
                     setEmail(e.target.value);
                   }}
                 />
-              </div>
 
-              <div className="col col-span-2">
+              <div className="col lg:col-span-2 md:col-span-1">
                 <TextField
                   sx={{ m: 1, width: "100%" }}
                   id="standard-basic"
@@ -170,35 +163,6 @@ export default function Proveedor() {
                 />
               </div>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4">
-              <div className="col col-span-2">
-                <TextField
-                  id="standard-basic"
-                  sx={{ m: 1, width: "90%", marginX: "10px" }}
-                  label="CORREO CONTRATANTE 1"
-                  variant="standard"
-                  focused
-                  value={correocontratante1}
-                  onChange={(e) => {
-                    setCorreoContratante1(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="col col-span-2">
-                <TextField
-                  id="standard-basic"
-                  sx={{ m: 1, width: "100%", marginX: "10px" }}
-                  label="CORREO CONTRATANTE 2"
-                  variant="standard"
-                  focused
-                  value={correocontratante2}
-                  onChange={(e) => {
-                    setCorreoContratante2(e.target.value);
-                  }}
-                />
-              </div>
-            </div>
           </div>
           <div>
             <Accordion sx={{ m: 1, width: "100%" }}>
@@ -216,7 +180,7 @@ export default function Proveedor() {
           </div>
           <div className="w-full m-1">
             <Button
-              onClick={createUser}
+              onClick={createUserCliente}
               className="w-full"
               variant="contained"
               color="primary"
@@ -226,7 +190,7 @@ export default function Proveedor() {
             </Button>
           </div>
 
-          <ModalProveedorCreate
+          <ClienteCreate
             open={openModal}
             nombre={nombre}
             password={password}

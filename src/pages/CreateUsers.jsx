@@ -8,6 +8,7 @@ import Proveedor from "../components/users/Proveedor";
 import { useState } from "react";
 import ProveedorMultiple from "../components/users/ProveedorMultiple";
 import Admin from "../components/users/Admin";
+import Cliente from "../components/users/Cliente";
 
 function TabPanel(props) {
   const { children, value, index, valueProveedor, ...other } = props;
@@ -139,7 +140,7 @@ export default function CreateUsers() {
           <Tab label="Multiple" {...a11yPropsClientes(1)} />
         </Tabs>
         <TabPanel value={valueClientes} index={0}>
-          <Admin />
+          <Cliente />
         </TabPanel>
         <TabPanel value={valueClientes} index={1}>
           Upload Multiple

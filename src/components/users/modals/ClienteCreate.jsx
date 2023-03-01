@@ -9,14 +9,14 @@ import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
-export default function ModalProveedorCreate({ open, nombre, password }) {
+export default function ClienteCreate({ open, nombre, password }) {
   const navigate = useNavigate();
 
   const showAlert = () => {
     Swal.fire({
       // position: "top-end",
       icon: "success",
-      title: "Usuario Agregado correctamente",
+      title: "Usuario Cliente agregado correctamente",
       showConfirmButton: false,
       timer: 1500,
     });
@@ -31,13 +31,12 @@ export default function ModalProveedorCreate({ open, nombre, password }) {
       <Dialog open={open} maxWidth="xs">
         <DialogTitle>
           <Alert severity="success">
-            El Usuario <b>Proveedor</b> fue creado correctamente.
+            El Usuario <b>Cliente</b> fue creado correctamente.
           </Alert>
         </DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ textAlign: "center" }}>
-            <b>Nota:</b> Los accesos del Usuario fueron enviados al correo
-            electrónico proporcionado.
+            <b>Nota:</b> Los accesos del Usuario seran enviado hasta el contacto comercia autorice.
           </DialogContentText>
           <div className="mt-5">
             <TextField
