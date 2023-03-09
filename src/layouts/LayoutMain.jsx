@@ -22,12 +22,12 @@ import { NavLink, Outlet } from "react-router-dom";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
-import StarBorder from "@mui/icons-material/StarBorder";
-import ModeIcon from "@mui/icons-material/Mode";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import BusinessIcon from '@mui/icons-material/Business';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import Loading from "../components/Loading";
+import LockPersonIcon from '@mui/icons-material/LockPerson';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 
 const drawerWidth = 240;
 
@@ -234,26 +234,36 @@ export default function LayoutMain({ classes }) {
             </ListItemButton>
           </NavLink>
 
-          {/* <ListItemButton onClick={handleClick}>
+          <ListItemButton onClick={handleClick}>
             <ListItemIcon>
-              <ModeIcon />
+              <LockPersonIcon />
             </ListItemIcon>
-            <ListItemText primary="Actualizaciones" />
+            <ListItemText primary="Autenticación" />
             {openList ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
 
           <Collapse in={openList} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <NavLink to="/updaterfc">
+
+              <NavLink to="/empresas">
                 <ListItemButton sx={{ pl: 8 }}>
                   <ListItemIcon>
-                    <StarBorder />
+                    <VpnKeyIcon />
                   </ListItemIcon>
-                  <ListItemText primary="RFC" />
+                  <ListItemText primary="Roles" />
+                </ListItemButton>
+              </NavLink>
+
+              <NavLink to="/empresas">
+                <ListItemButton sx={{ pl: 8 }}>
+                  <ListItemIcon>
+                    <VpnKeyIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Permisos" />
                 </ListItemButton>
               </NavLink>
             </List>
-          </Collapse> */}
+          </Collapse>
         </List>
       </Drawer>
 
