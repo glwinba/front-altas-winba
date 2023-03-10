@@ -13,7 +13,7 @@ import thunk from "redux-thunk";
 
 // const composedEnhacers = composeAlt(applyMiddleware(thunk));
 
-const store = createStore(userReducer, composedEnhacers);
+const store = createStore(userReducer);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
