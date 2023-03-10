@@ -9,11 +9,11 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 
 
-// const composeAlt = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeAlt = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-// const composedEnhacers = composeAlt(applyMiddleware(thunk));
+const composedEnhacers = composeAlt(applyMiddleware(thunk));
 
-const store = createStore(userReducer);
+const store = createStore(userReducer, composedEnhacers);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
