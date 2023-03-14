@@ -9,11 +9,13 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import UpdateRazonSocial from "../components/users/UpdateRazonSocial";
 import AddEmpresaUsuario from "../components/users/AddEmpresaUsuario";
+import Swal from "sweetalert2";
 
 function Updateuser() {
   const { id } = useParams();
   const [user, setUser] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+
   const [empresas, setEmpresas] = useState([]);
   const [empresaModal, setEmpresaModal] = useState(false);
 
@@ -48,6 +50,31 @@ function Updateuser() {
 
   const handleCloseAddEmpresaModal = () => {
     setEmpresaModal(false);
+  };
+
+  const handleUpdatePassword = async () => {
+    Swal.fire({
+      title: "¿Estas seguro de actualizar la contraseña del Usuario?",
+      text: "No podras revertir los cambios.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, Actualizar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await axios.put(`http://localhost:5000/updatePassword/${id}`);
+
+        Swal.fire({
+          icon: "success",
+          title: "Actualizado!!!",
+          html: "El usuario fue actualizado correctamente",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    });
   };
 
   return (
@@ -143,6 +170,7 @@ function Updateuser() {
                     variant="contained"
                     color="primary"
                     sx={{ marginX: "2px" }}
+                    onClick={handleUpdatePassword}
                   >
                     Editar
                   </Button>
@@ -210,11 +238,11 @@ function Updateuser() {
         handleCloseModal={handleCloseModal}
       />
       <UpdateRazonSocial />
-      <AddEmpresaUsuario 
-      open={empresaModal}
-      user={user}
-      handleCloseModal={handleCloseAddEmpresaModal}
-      getUserEmpresa={getUserEmpresa}
+      <AddEmpresaUsuario
+        open={empresaModal}
+        user={user}
+        handleCloseModal={handleCloseAddEmpresaModal}
+        getUserEmpresa={getUserEmpresa}
       />
     </div>
   );
