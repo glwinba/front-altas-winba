@@ -89,7 +89,7 @@ export default function CreateUsers() {
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 2, borderColor: "rgb(229, 231, 235)" }}>
-        <div className="title-main">AÑADIR USUARIOS</div>
+        <div className="title-main">INSERTAR USUARIOS</div>
 
         <Tabs
           sx={{ paddingLeft: "5%" }}
@@ -115,20 +115,7 @@ export default function CreateUsers() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Tabs
-          value={valueProveedor}
-          onChange={handleChangeProveedor}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Individual" {...a11yPropsProv(0)} />
-          <Tab label="Multiple" {...a11yPropsProv(1)} />
-        </Tabs>
-        <TabPanel value={valueProveedor} index={0}>
-          <Proveedor />
-        </TabPanel>
-        <TabPanel value={valueProveedor} index={1}>
-          <ProveedorMultiple />
-        </TabPanel>
+        <Proveedor />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Tabs

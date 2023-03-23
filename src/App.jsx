@@ -8,6 +8,9 @@ import Updateuser from "./pages/Updateuser";
 import Grupos from "./pages/Grupos";
 import CreateGroups from "./pages/CreateGroups";
 import CreateCompanies from "./pages/CreateCompany";
+import BlackLists69SAT from "./pages/ListasNegras/69SAT/BlackList69SAT";
+import CreateSupposed from "./pages/ListasNegras/69SAT/CreateSupposeds";
+import DashBoard from "./pages/DashBoard";
 
 
 function App() {
@@ -16,7 +19,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/" element={<DashBoard />} />
           <Route path="/" element={<LayoutMain />}>
+            
             <Route path="/users" element={<Users />} />
             <Route path="/createusers" element={<CreateUsers />}/>
             <Route path="/creategroups" element={<CreateGroups />}/>
@@ -24,6 +29,8 @@ function App() {
             <Route path="/empresas" element={<Empresas />} />
             <Route path="/grupos" element={<Grupos />} />
             <Route path="/updateuser/:id" element={<Updateuser />} />
+            <Route path="/listasnegras69sat" element={<BlackLists69SAT />} />
+            <Route path="/crear-supuesto" element={<CreateSupposed />} />
           </Route>
         </Routes>
       </BrowserRouter>

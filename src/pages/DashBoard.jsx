@@ -23,13 +23,18 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import BusinessIcon from '@mui/icons-material/Business';
-import ApartmentIcon from '@mui/icons-material/Apartment';
+import BusinessIcon from "@mui/icons-material/Business";
+import ApartmentIcon from "@mui/icons-material/Apartment";
 import Loading from "../components/Loading";
-import LockPersonIcon from '@mui/icons-material/LockPerson';
-import VpnKeyIcon from '@mui/icons-material/VpnKey';
-import SdCardAlertIcon from '@mui/icons-material/SdCardAlert';
-import ArticleIcon from '@mui/icons-material/Article';
+import LockPersonIcon from "@mui/icons-material/LockPerson";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import SdCardAlertIcon from "@mui/icons-material/SdCardAlert";
+import ArticleIcon from "@mui/icons-material/Article";
+import MUIDataTable from "mui-datatables";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
+import { Button } from "@mui/material";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -99,14 +104,14 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
-export default function LayoutMain({ classes }) {
+export default function DashBoard({ classes }) {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [openList, setOpenList] = React.useState(false);
-  const [openListBlackLists, setOpenListBlackLists] = React.useState(false);
-
-  // const loading = 
+  const [open, setOpen] = useState(false);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [openList, setOpenList] = useState(false);
+  const [openListBlackLists, setOpenListBlackLists] = useState(false);
+  const [grupos, setGrupos] = useState([]);
+  // const loading =
   const handleClick = () => {
     setOpenList(!openList);
   };
@@ -130,6 +135,61 @@ export default function LayoutMain({ classes }) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const options = {
+    tableBodyMaxHeight: "auto",
+    download: false,
+    viewColumns: false,
+    filter: false,
+    print: false,
+    selectableRows: "none",
+  };
+  const columns = [
+    { name: "id", options: { filter: false, display: false } },
+    { name: "nombre", options: { filter: false } },
+    { name: "comentarios", options: { filter: false } },
+    {
+      name: "ACCIONES",
+      options: {
+        filter: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <>
+              <NavLink to={"/updateuser/" + tableMeta.rowData[0]}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginX: "2px" }}
+                >
+                  Editar
+                </Button>
+              </NavLink>
+
+              <Button
+                variant="contained"
+                sx={{ backgroundColor: "red", marginX: "2px" }}
+                onClick={() => {
+                  console.log(tableMeta.rowData[0]);
+                }}
+              >
+                Eliminar
+              </Button>
+            </>
+          );
+        },
+      },
+    },
+  ];
+
+  const getGrupos = () => {
+
+    axios.get("http://127.0.0.1:5000/getGrupos").then((res) => {
+      setGrupos(res.data);
+    });
+  };
+
+  useEffect(() => {
+    getGrupos();
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -251,7 +311,6 @@ export default function LayoutMain({ classes }) {
 
           <Collapse in={openList} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-
               <NavLink to="/empresas">
                 <ListItemButton sx={{ pl: 8 }}>
                   <ListItemIcon>
@@ -282,7 +341,6 @@ export default function LayoutMain({ classes }) {
 
           <Collapse in={openListBlackLists} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-
               <NavLink to="/listasnegras69sat">
                 <ListItemButton sx={{ pl: 8 }}>
                   <ListItemIcon>
@@ -318,10 +376,22 @@ export default function LayoutMain({ classes }) {
         className="w-full h-full"
         style={{ background: "rgb(229, 231, 235)", minHeight: "100vh" }}
       >
-        <div className="mt-24 mb-10 mx-28 h-full bg-white p-6 rounded-md border border-gray-300 shadow-xl">
-          {/* {loading ? () : ()} */}
-          <Outlet />
-          {/* <Loading/> */}
+        <div className="grid grid-cols-4 mx-5 mt-24">
+          <div className="bg-white p-6 rounded-md border border-gray-300 shadow-xl"></div>
+          <div className="bg-white p-6 rounded-md border border-gray-300 shadow-xl"></div>
+          <div className="bg-white p-6 rounded-md border border-gray-300 shadow-xl"></div>
+          <div className="bg-white p-6 rounded-md border border-gray-300 shadow-xl"></div>
+        </div>
+        <div className="grid grid-cols-4 mx-5 mt-5">
+          <div className="col-span-2 bg-white p-6 rounded-md border border-gray-300 shadow-xl">
+            <MUIDataTable
+              title={"DOCUMENTOS 69B SAT"}
+              data={grupos}
+              columns={columns}
+              options={options}
+            />
+          </div>
+          <div className="col-span-2 bg-white p-6 rounded-md border border-gray-300 shadow-xl"></div>
         </div>
       </div>
     </Box>

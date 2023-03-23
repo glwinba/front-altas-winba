@@ -43,6 +43,7 @@ export default function TableMultipleProveedor({ opciones, dataUsers }) {
               <TableCell>Razón Social</TableCell>
               <TableCell align="right">RFC</TableCell>
               <TableCell align="right">Correo</TableCell>
+              <TableCell align="right">Area Servicio</TableCell>
               {opciones ? <TableCell align="right">Opciones</TableCell> : <></>}
             </TableRow>
           </TableHead>
@@ -56,7 +57,8 @@ export default function TableMultipleProveedor({ opciones, dataUsers }) {
                   {row.RAZONSOCIALPROVEEDOR}
                 </TableCell>
                 <TableCell align="right">{row.RFCPROVEEDOR}</TableCell>
-                <TableCell align="right">{row.EMAIL}</TableCell>
+                <TableCell align="right">{row.MAILPROVEEDOR}</TableCell>
+                <TableCell align="right">{row.AREASERVICIO}</TableCell>
                 {opciones ? (
                   <TableCell align="right">
                     <Button

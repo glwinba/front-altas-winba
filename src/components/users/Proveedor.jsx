@@ -8,42 +8,44 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
 import axios from "axios";
-import ModalProveedorCreate from "./ModalProveedorCreate";
 import MasDetalles from "./MasDetalles";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../actions";
+import { setDataUsers, setLoading } from "../../actions";
 import Loading from "../Loading";
+import {
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  IconButton,
+} from "@mui/material";
+import BackupIcon from "@mui/icons-material/Backup";
+import ConfirmCreateUser from "../serv_esp/modals/ConfirmCreateUser";
+import TableMultipleProveedor from "./TableProveedorMultiple";
 
 export default function Proveedor() {
-  const [nombre, setNombre] = useState("");
-  const [password, setPassword] = useState("");
+  // const [nombre, setNombre] = useState("");
   const [empresas, setEmpresas] = useState([]);
   const [rfc, setRfc] = useState("");
   const [email, setEmail] = useState("");
   const [razonsocial, setRazonsocial] = useState("");
   const [correocontratante1, setCorreoContratante1] = useState("");
   const [correocontratante2, setCorreoContratante2] = useState("");
+  const [areaServicio, setAreaServicio] = useState("");
+  const [boolSendEmail, setBoolSendEmail] = useState(true);
   const [empresacontratante, setEmpresacontratante] = useState(empresas[0]);
   const [openModal, setOpenModal] = useState(false);
+  const [masive, setMasive] = useState(false);
+  const [fileData, setFileData] = useState(null);
+
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.loading);
+  const dataUsers = useSelector((state) => state.data_users);
 
   const defaultOptions = {
     options: empresas.length > 0 ? empresas : [],
     getOptionLabel: (options) => options.nombre,
   };
-
-  function generatePassword() {
-    const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let pass = "";
-
-    for (let i = 0; i < 10; i++) {
-      pass += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-    }
-
-    let concatenar = pass.replace(pass[Math.round(Math.random() * 9)], "@");
-    return concatenar;
-  }
 
   function getEmpresas() {
     axios.get("http://127.0.0.1:5000/empresasallselect").then((res) => {
@@ -52,27 +54,58 @@ export default function Proveedor() {
     });
   }
 
-  function createUser() {
-    axios
-      .post("http://127.0.0.1:5000/createuser", {
-        RFC: rfc,
-        PASS: password,
-        NOMBRE: razonsocial,
-        EMAIL: email,
-        EmpresaId: empresacontratante,
-        correocontratante1: correocontratante1,
-        correocontratante2: correocontratante2,
-      })
-      .then((res) => {
-        setNombre(res.data.UsuarioNombreUsuario)
-        setOpenModal(true);
-      });
+  function createUser(e) {
+    e.preventDefault();
+
+    if (masive) {
+      axios
+        .post("http://127.0.0.1:5000/createuser", {
+          dataExcel: dataUsers,
+          EmpresaId: empresacontratante,
+          sendMail: boolSendEmail
+        })
+        .then((res) => {
+          setOpenModal(true);
+        });
+    } else {
+      axios
+        .post("http://127.0.0.1:5000/createuser", {
+          RFC: rfc,
+          NOMBRE: razonsocial,
+          EMAIL: email,
+          EmpresaId: empresacontratante,
+          correocontratante1: correocontratante1,
+          correocontratante2: correocontratante2,
+          AreaServicio: areaServicio,
+          sendMail: boolSendEmail
+        })
+        .then((res) => {
+          setOpenModal(true);
+        });
+    }
+  }
+
+  async function readExcel() {
+    dispatch(setLoading(true));
+
+    const dataExcel = await axios.post(
+      "http://127.0.0.1:5000/readExcel",
+      {
+        file: fileData,
+      },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    dispatch(setDataUsers(dataExcel.data));
+    dispatch(setLoading(false));
   }
 
   useEffect(() => {
     dispatch(setLoading(true));
-
-    setPassword(generatePassword());
     getEmpresas();
   }, []);
 
@@ -90,88 +123,99 @@ export default function Proveedor() {
           <Loading />
         </div>
       ) : (
-        <div>
+        <>
           <div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4">
-              <div className="col">
-                <TextField
-                  id="standard-basic"
-                  sx={{ m: 1, width: "25ch" }}
-                  label="RFC"
-                  variant="standard"
-                  focused
-                  value={rfc}
-                  onChange={(e) => {
-                    setRfc(e.target.value);
-                  }}
-                  autoFocus
-                />
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={masive}
+                    onChange={(e) => {
+                      setMasive(e.target.checked);
+                    }}
+                  />
+                }
+                label="Inserción Masiva"
+              />
+            </FormGroup>
+          </div>
+
+          {masive ? (
+            <>
+              <div>
+                <FormLabel>Ingres tu archivo excel: </FormLabel>
+
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="label"
+                >
+                  <input
+                    hidden
+                    type="file"
+                    name="file"
+                    onChange={(e) => {
+                      setFileData(e.target.files[0]);
+                    }}
+                  />
+                  <BackupIcon />
+                </IconButton>
+                <Button variant="contained" onClick={readExcel}>
+                  Cargar
+                </Button>
+              </div>
+              <div className="my-10">
+                <TableMultipleProveedor opciones={true} dataUsers={dataUsers} />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4">
+                <div className="col">
+                  <TextField
+                    id="standard-basic"
+                    sx={{ m: 1, width: "25ch" }}
+                    label="RFC"
+                    variant="standard"
+                    focused
+                    value={rfc}
+                    onChange={(e) => {
+                      setRfc(e.target.value);
+                    }}
+                    autoFocus
+                  />
+                </div>
+
+                <div className="col">
+                  <TextField
+                    id="standard-basic"
+                    sx={{ m: 1, width: "25ch" }}
+                    label="CORREO ELECTRONICO"
+                    variant="standard"
+                    focused
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="col col-span-2">
+                  <TextField
+                    sx={{ m: 1, width: "100%" }}
+                    id="standard-basic"
+                    label="RAZON SOCIAL"
+                    variant="standard"
+                    focused
+                    value={razonsocial}
+                    onChange={(e) => {
+                      setRazonsocial(e.target.value);
+                    }}
+                  />
+                </div>
               </div>
 
-              <div className="col">
-                <TextField
-                  id="standard-basic"
-                  sx={{ m: 1, width: "25ch" }}
-                  label="CORREO ELECTRONICO"
-                  variant="standard"
-                  focused
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="col col-span-2">
-                <TextField
-                  sx={{ m: 1, width: "100%" }}
-                  id="standard-basic"
-                  label="RAZON SOCIAL"
-                  variant="standard"
-                  focused
-                  value={razonsocial}
-                  onChange={(e) => {
-                    setRazonsocial(e.target.value);
-                  }}
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-4">
-              <div className="col col-span-3">
-                <Autocomplete
-                  disablePortal
-                  {...defaultOptions}
-                  value={empresacontratante}
-                  multiple={false}
-                  sx={{ m: 1, width: "100%", paddingRight: "30px" }}
-                  onChange={(e, newValue) => {
-                    setEmpresacontratante(parseInt(newValue.id));
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="EMPRESA CONTRATANTE"
-                      variant="standard"
-                      focused
-                    />
-                  )}
-                />
-              </div>
-
-              <div className="col">
-                <TextField
-                  sx={{ m: 1, width: "100%" }}
-                  id="standard-basic"
-                  label="CONTRASEÑA"
-                  variant="standard"
-                  focused
-                  value={password}
-                  disabled
-                />
-              </div>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4">
-              <div className="col col-span-2">
+              <div className="grid grid-cols-3">
                 <TextField
                   id="standard-basic"
                   sx={{ m: 1, width: "90%", marginX: "10px" }}
@@ -183,12 +227,10 @@ export default function Proveedor() {
                     setCorreoContratante1(e.target.value);
                   }}
                 />
-              </div>
 
-              <div className="col col-span-2">
                 <TextField
                   id="standard-basic"
-                  sx={{ m: 1, width: "100%", marginX: "10px" }}
+                  sx={{ m: 1, width: "90%", marginX: "10px" }}
                   label="CORREO CONTRATANTE 2"
                   variant="standard"
                   focused
@@ -197,8 +239,56 @@ export default function Proveedor() {
                     setCorreoContratante2(e.target.value);
                   }}
                 />
+
+                <TextField
+                  id="standard-basic"
+                  sx={{ m: 1, width: "100%", marginX: "10px" }}
+                  label="Area de Servicio"
+                  variant="standard"
+                  focused
+                  value={areaServicio}
+                  onChange={(e) => {
+                    setAreaServicio(e.target.value);
+                  }}
+                />
               </div>
-            </div>
+            </>
+          )}
+          <div className="grid grid-cols-1">
+            <Autocomplete
+              disablePortal
+              {...defaultOptions}
+              value={empresacontratante}
+              multiple={false}
+              sx={{ m: 1, width: "100%" }}
+              onChange={(e, newValue) => {
+                setEmpresacontratante(parseInt(newValue.id));
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="EMPRESA CONTRATANTE"
+                  variant="standard"
+                  focused
+                />
+              )}
+            />
+          </div>
+
+          <div>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={boolSendEmail}
+                    onChange={(e) => {
+                      setBoolSendEmail(e.target.checked);
+                    }}
+                  />
+                }
+                label="Enviar Correo"
+              />
+            </FormGroup>
           </div>
           <div>
             <Accordion sx={{ m: 1, width: "100%" }}>
@@ -226,12 +316,8 @@ export default function Proveedor() {
             </Button>
           </div>
 
-          <ModalProveedorCreate
-            open={openModal}
-            nombre={nombre}
-            password={password}
-          />
-        </div>
+          <ConfirmCreateUser open={openModal} />
+        </>
       )}
     </>
   );

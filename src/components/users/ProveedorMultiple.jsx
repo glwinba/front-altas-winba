@@ -45,7 +45,7 @@ export default function ProveedorMultiple() {
 
     axios
       .post(
-        "http://127.0.0.1:5000/createusermasive",
+        "http://127.0.0.1:5000/createuser",
         {
           dataExcel: dataUsers,
           EmpresaId: empresacontratante,
