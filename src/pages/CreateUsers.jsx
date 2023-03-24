@@ -6,9 +6,8 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Proveedor from "../components/users/Proveedor";
 import { useState } from "react";
-import ProveedorMultiple from "../components/users/ProveedorMultiple";
 import Admin from "../components/users/Admin";
-import Cliente from "../components/users/Cliente";
+import Cliente from "../components/serv_esp/customers/Cliente";
 
 function TabPanel(props) {
   const { children, value, index, valueProveedor, ...other } = props;
@@ -66,25 +65,17 @@ function a11yPropsClientes(index) {
 
 export default function CreateUsers() {
   const [value, setValue] = useState(0);
-  const [valueProveedor, setValueProveedor] = useState(0);
   const [valueAdmin, setValueAdmin] = useState(0);
-  const [valueClientes, setValueClientes] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const handleChangeProveedor = (event, newValue) => {
-    setValueProveedor(newValue);
   };
 
   const handleChangeAdmin = (event, newValue) => {
     setValueAdmin(newValue);
   };
 
-  const handleChangeClientes = (event, newValue) => {
-    setValueClientes(newValue);
-  };
+
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -118,21 +109,9 @@ export default function CreateUsers() {
         <Proveedor />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Tabs
-          value={valueClientes}
-          onChange={handleChangeClientes}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Individual" {...a11yPropsClientes(0)} />
-          <Tab label="Multiple" {...a11yPropsClientes(1)} />
-        </Tabs>
-        <TabPanel value={valueClientes} index={0}>
-          <Cliente />
-        </TabPanel>
-        <TabPanel value={valueClientes} index={1}>
-          Upload Multiple
-        </TabPanel>
+        <Cliente />
       </TabPanel>
+
       <TabPanel value={value} index={2}>
         <Tabs
           value={valueAdmin}

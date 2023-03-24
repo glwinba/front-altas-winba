@@ -8,10 +8,11 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
 import axios from "axios";
-import MasDetalles from "./MasDetalles";
+import MasDetalles from "../../users/MasDetalles";
 import { useDispatch, useSelector } from "react-redux";
-import { setDataUsers, setLoading } from "../../actions";
-import Loading from "../Loading";
+import { setDataUsers, setLoading } from "../../../actions";
+import Loading from "../../Loading";
+import ConfirmCreateUser from "../modals/ConfirmCreateUser";
 import {
   Checkbox,
   FormControlLabel,
@@ -20,26 +21,20 @@ import {
   IconButton,
 } from "@mui/material";
 import BackupIcon from "@mui/icons-material/Backup";
-import ConfirmCreateUser from "../serv_esp/modals/ConfirmCreateUser";
-import TableMultipleProveedor from "./TableProveedorMultiple";
 
-export default function Proveedor() {
+export default function Cliente() {
   const [empresas, setEmpresas] = useState([]);
   const [rfc, setRfc] = useState("");
   const [email, setEmail] = useState("");
   const [razonsocial, setRazonsocial] = useState("");
-  const [correocontratante1, setCorreoContratante1] = useState("");
-  const [correocontratante2, setCorreoContratante2] = useState("");
-  const [areaServicio, setAreaServicio] = useState("");
-  const [boolSendEmail, setBoolSendEmail] = useState(true);
   const [empresacontratante, setEmpresacontratante] = useState(empresas[0]);
   const [openModal, setOpenModal] = useState(false);
-  const [masive, setMasive] = useState(false);
-  const [fileData, setFileData] = useState(null);
-
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.loading);
   const dataUsers = useSelector((state) => state.data_users);
+  const [boolSendEmail, setBoolSendEmail] = useState(false);
+  const [masive, setMasive] = useState(false);
+  const [fileData, setFileData] = useState(null);
 
   const defaultOptions = {
     options: empresas.length > 0 ? empresas : [],
@@ -53,38 +48,7 @@ export default function Proveedor() {
     });
   }
 
-  function createUser(e) {
-    e.preventDefault();
-
-    if (masive) {
-      axios
-        .post("http://127.0.0.1:5000/createuser", {
-          dataExcel: dataUsers,
-          EmpresaId: empresacontratante,
-          sendMail: boolSendEmail
-        })
-        .then((res) => {
-          setOpenModal(true);
-        });
-    } else {
-      axios
-        .post("http://127.0.0.1:5000/createuser", {
-          RFC: rfc,
-          NOMBRE: razonsocial,
-          EMAIL: email,
-          EmpresaId: empresacontratante,
-          correocontratante1: correocontratante1,
-          correocontratante2: correocontratante2,
-          AreaServicio: areaServicio,
-          sendMail: boolSendEmail
-        })
-        .then((res) => {
-          setOpenModal(true);
-        });
-    }
-  }
-
-  async function readExcel() {
+  const readExcel = async () => {
     dispatch(setLoading(true));
 
     const dataExcel = await axios.post(
@@ -101,6 +65,32 @@ export default function Proveedor() {
 
     dispatch(setDataUsers(dataExcel.data));
     dispatch(setLoading(false));
+  };
+
+  function createUserCliente() {
+    if (masive) {
+      axios
+        .post("http://127.0.0.1:5000/createusercustomer", {
+          dataExcel: dataUsers,
+          EmpresaId: empresacontratante,
+          sendMail: boolSendEmail,
+        })
+        .then((res) => {
+          setOpenModal(true);
+        });
+    } else {
+      axios
+        .post("http://127.0.0.1:5000/createusercustomer", {
+          RFC: rfc,
+          NOMBRE: razonsocial,
+          EMAIL: email,
+          EmpresaId: empresacontratante,
+          sendMail: boolSendEmail,
+        })
+        .then((res) => {
+          setOpenModal(true);
+        });
+    }
   }
 
   useEffect(() => {
@@ -122,7 +112,7 @@ export default function Proveedor() {
           <Loading />
         </div>
       ) : (
-        <>
+        <div>
           <div>
             <FormGroup>
               <FormControlLabel
@@ -138,7 +128,6 @@ export default function Proveedor() {
               />
             </FormGroup>
           </div>
-
           {masive ? (
             <>
               <div>
@@ -163,14 +152,11 @@ export default function Proveedor() {
                   Cargar
                 </Button>
               </div>
-              <div className="my-10">
-                <TableMultipleProveedor opciones={true} dataUsers={dataUsers} />
-              </div>
             </>
           ) : (
             <>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4">
-                <div className="col">
+              <div>
+                <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
                   <TextField
                     id="standard-basic"
                     sx={{ m: 1, width: "25ch" }}
@@ -183,9 +169,7 @@ export default function Proveedor() {
                     }}
                     autoFocus
                   />
-                </div>
 
-                <div className="col">
                   <TextField
                     id="standard-basic"
                     sx={{ m: 1, width: "25ch" }}
@@ -197,59 +181,21 @@ export default function Proveedor() {
                       setEmail(e.target.value);
                     }}
                   />
+
+                  <div className="col lg:col-span-2 md:col-span-1">
+                    <TextField
+                      sx={{ m: 1, width: "100%" }}
+                      id="standard-basic"
+                      label="RAZON SOCIAL"
+                      variant="standard"
+                      focused
+                      value={razonsocial}
+                      onChange={(e) => {
+                        setRazonsocial(e.target.value);
+                      }}
+                    />
+                  </div>
                 </div>
-
-                <div className="col col-span-2">
-                  <TextField
-                    sx={{ m: 1, width: "100%" }}
-                    id="standard-basic"
-                    label="RAZON SOCIAL"
-                    variant="standard"
-                    focused
-                    value={razonsocial}
-                    onChange={(e) => {
-                      setRazonsocial(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3">
-                <TextField
-                  id="standard-basic"
-                  sx={{ m: 1, width: "90%", marginX: "10px" }}
-                  label="CORREO CONTRATANTE 1"
-                  variant="standard"
-                  focused
-                  value={correocontratante1}
-                  onChange={(e) => {
-                    setCorreoContratante1(e.target.value);
-                  }}
-                />
-
-                <TextField
-                  id="standard-basic"
-                  sx={{ m: 1, width: "90%", marginX: "10px" }}
-                  label="CORREO CONTRATANTE 2"
-                  variant="standard"
-                  focused
-                  value={correocontratante2}
-                  onChange={(e) => {
-                    setCorreoContratante2(e.target.value);
-                  }}
-                />
-
-                <TextField
-                  id="standard-basic"
-                  sx={{ m: 1, width: "100%", marginX: "10px" }}
-                  label="Area de Servicio"
-                  variant="standard"
-                  focused
-                  value={areaServicio}
-                  onChange={(e) => {
-                    setAreaServicio(e.target.value);
-                  }}
-                />
               </div>
             </>
           )}
@@ -273,7 +219,6 @@ export default function Proveedor() {
               )}
             />
           </div>
-
           <div>
             <FormGroup>
               <FormControlLabel
@@ -305,7 +250,7 @@ export default function Proveedor() {
           </div>
           <div className="w-full m-1">
             <Button
-              onClick={createUser}
+              onClick={createUserCliente}
               className="w-full"
               variant="contained"
               color="primary"
@@ -316,7 +261,7 @@ export default function Proveedor() {
           </div>
 
           <ConfirmCreateUser open={openModal} />
-        </>
+        </div>
       )}
     </>
   );
