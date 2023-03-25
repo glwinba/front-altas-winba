@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Proveedor from "../components/users/Proveedor";
 import { useState } from "react";
-import Admin from "../components/users/Admin";
+import Admin from "../components/serv_esp/admin/Admin";
 import Cliente from "../components/serv_esp/customers/Cliente";
 
 function TabPanel(props) {
@@ -42,39 +42,12 @@ function a11yProps(index) {
   };
 }
 
-function a11yPropsProv(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
-function a11yPropsAdmin(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
-function a11yPropsClientes(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
 export default function CreateUsers() {
   const [value, setValue] = useState(0);
-  const [valueAdmin, setValueAdmin] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const handleChangeAdmin = (event, newValue) => {
-    setValueAdmin(newValue);
-  };
-
 
 
   return (
@@ -113,20 +86,7 @@ export default function CreateUsers() {
       </TabPanel>
 
       <TabPanel value={value} index={2}>
-        <Tabs
-          value={valueAdmin}
-          onChange={handleChangeAdmin}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Individual" {...a11yPropsAdmin(0)} />
-          <Tab label="Multiple" {...a11yPropsAdmin(1)} />
-        </Tabs>
-        <TabPanel value={valueAdmin} index={0}>
-          <Admin />
-        </TabPanel>
-        <TabPanel value={valueAdmin} index={1}>
-          Upload Multiple
-        </TabPanel>
+        <Admin />
       </TabPanel>
     </Box>
   );
