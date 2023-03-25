@@ -19,6 +19,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 export default function AddEmpresaUsuario({ open, handleCloseModal, user, getUserEmpresa }) {
   const [empresas, setEmpresas] = useState([]);
   const [empresacontratante, setEmpresacontratante] = useState(empresas[0]);
+  const [areaservicio, setAreaServicio] = useState([]);
 
   const defaultOptions = {
     options: empresas.length > 0 ? empresas : [],
@@ -41,9 +42,11 @@ export default function AddEmpresaUsuario({ open, handleCloseModal, user, getUse
   }
 
   const handleClick = async () => {
-    await axios.post(`http://localhost:5000/addEmpresUser`, {
+    console.log(user)
+    console.log(empresacontratante)
+    await axios.post(`http://localhost:5000/createoperatobyuserproveedor`, {
       usuario: user,
-      empresasusuarios: empresacontratante
+      EmpresaId: empresacontratante
     });
     getUserEmpresa();
     handleCloseModal();
