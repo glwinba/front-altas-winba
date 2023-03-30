@@ -66,7 +66,7 @@ function Users() {
 
     axios.get("http://127.0.0.1:5000/getUsers").then((res) => {
       setUsers(res.data);
-      dispatch(setLoading(false));
+      // dispatch(setLoading(false));
     });
   };
 

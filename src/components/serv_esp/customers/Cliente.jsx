@@ -68,6 +68,8 @@ export default function Cliente() {
   };
 
   function createUserCliente() {
+    dispatch(setLoading(true));
+
     if (masive) {
       axios
         .post("http://127.0.0.1:5000/createusercustomer", {
@@ -76,6 +78,7 @@ export default function Cliente() {
           sendMail: boolSendEmail,
         })
         .then((res) => {
+          dispatch(setLoading(false));
           setOpenModal(true);
         });
     } else {
@@ -88,6 +91,7 @@ export default function Cliente() {
           sendMail: boolSendEmail,
         })
         .then((res) => {
+          dispatch(setLoading(false));
           setOpenModal(true);
         });
     }

@@ -12,7 +12,13 @@ import MasDetalles from "../../users/MasDetalles";
 import { useDispatch, useSelector } from "react-redux";
 import { setDataUsers, setLoading } from "../../../actions";
 import Loading from "../../Loading";
-import { Checkbox, FormControlLabel, FormGroup, FormLabel, IconButton } from "@mui/material";
+import {
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  IconButton,
+} from "@mui/material";
 import BackupIcon from "@mui/icons-material/Backup";
 import ConfirmCreateUser from "../modals/ConfirmCreateUser";
 
@@ -38,7 +44,7 @@ export default function Admin() {
     const data = await axios.get("http://127.0.0.1:5000/empresasallselect");
     setEmpresas(data.data);
     dispatch(setLoading(false));
-  }
+  };
 
   const extractDataExcel = async () => {
     dispatch(setLoading(true));
@@ -60,26 +66,26 @@ export default function Admin() {
   };
 
   const createUserAdmin = async () => {
+    dispatch(setLoading(true));
     if (masive) {
-      await axios
-        .post("http://127.0.0.1:5000/createuseradmin", {
-          dataExcel: dataUsers,
-          EmpresaId: empresacontratante,
-          sendMail: boolSendEmail,
-        });
-        setOpenModal(true);
+      await axios.post("http://127.0.0.1:5000/createuseradmin", {
+        dataExcel: dataUsers,
+        EmpresaId: empresacontratante,
+        sendMail: boolSendEmail,
+      });
+      dispatch(setLoading(false));
+      setOpenModal(true);
     } else {
-      await axios
-      .post("http://127.0.0.1:5000/createuseradmin", {
+      await axios.post("http://127.0.0.1:5000/createuseradmin", {
         EMAIL: email,
         NOMBRE: nombre,
         EmpresaId: empresacontratante,
-        sendMail: boolSendEmail
+        sendMail: boolSendEmail,
       });
+      dispatch(setLoading(false));
       setOpenModal(true);
     }
-    
-  }
+  };
 
   useEffect(() => {
     dispatch(setLoading(true));
@@ -229,7 +235,7 @@ export default function Admin() {
             </Button>
           </div>
 
-          <ConfirmCreateUser open={openModal}/>
+          <ConfirmCreateUser open={openModal} />
         </div>
       )}
     </>

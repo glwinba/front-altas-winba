@@ -25,7 +25,6 @@ import Collapse from "@mui/material/Collapse";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import BusinessIcon from '@mui/icons-material/Business';
 import ApartmentIcon from '@mui/icons-material/Apartment';
-import Loading from "../components/Loading";
 import LockPersonIcon from '@mui/icons-material/LockPerson';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import SdCardAlertIcon from '@mui/icons-material/SdCardAlert';
@@ -319,9 +318,7 @@ export default function LayoutMain({ classes }) {
         style={{ background: "rgb(229, 231, 235)", minHeight: "100vh" }}
       >
         <div className="mt-24 mb-10 mx-28 h-full bg-white p-6 rounded-md border border-gray-300 shadow-xl">
-          {/* {loading ? () : ()} */}
           <Outlet />
-          {/* <Loading/> */}
         </div>
       </div>
     </Box>

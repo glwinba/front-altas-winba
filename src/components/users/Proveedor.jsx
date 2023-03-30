@@ -53,17 +53,19 @@ export default function Proveedor() {
     });
   }
 
-  function createUser(e) {
+  const createUser = async (e) => {
     e.preventDefault();
+    dispatch(setLoading(true));
 
     if (masive) {
       axios
         .post("http://127.0.0.1:5000/createuser", {
           dataExcel: dataUsers,
           EmpresaId: empresacontratante,
-          sendMail: boolSendEmail
+          sendMail: boolSendEmail,
         })
         .then((res) => {
+          dispatch(setLoading(false));
           setOpenModal(true);
         });
     } else {
@@ -76,15 +78,16 @@ export default function Proveedor() {
           correocontratante1: correocontratante1,
           correocontratante2: correocontratante2,
           AreaServicio: areaServicio,
-          sendMail: boolSendEmail
+          sendMail: boolSendEmail,
         })
         .then((res) => {
+          dispatch(setLoading(false));
           setOpenModal(true);
         });
     }
   }
 
-  async function extractDataExcel() {
+  const extractDataExcel = async () => {
     dispatch(setLoading(true));
 
     const dataExcel = await axios.post(
