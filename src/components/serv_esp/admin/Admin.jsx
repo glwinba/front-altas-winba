@@ -33,7 +33,6 @@ export default function Admin() {
   const [masive, setMasive] = useState(false);
   const [fileData, setFileData] = useState(null);
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.loading);
 
   const defaultOptions = {
     options: empresas.length > 0 ? empresas : [],
@@ -94,150 +93,137 @@ export default function Admin() {
 
   return (
     <>
-      {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <Loading />
-        </div>
-      ) : (
+      <div>
         <div>
-          <div>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={masive}
-                    onChange={(e) => {
-                      setMasive(e.target.checked);
-                    }}
-                  />
-                }
-                label="Inserción Masiva"
-              />
-            </FormGroup>
-          </div>
-          {masive ? (
-            <>
-              <div>
-                <FormLabel>Ingres tu archivo excel: </FormLabel>
-
-                <IconButton
-                  color="primary"
-                  aria-label="upload picture"
-                  component="label"
-                >
-                  <input
-                    hidden
-                    type="file"
-                    name="file"
-                    onChange={(e) => {
-                      setFileData(e.target.files[0]);
-                    }}
-                  />
-                  <BackupIcon />
-                </IconButton>
-                <Button variant="contained" onClick={extractDataExcel}>
-                  Cargar
-                </Button>
-              </div>
-            </>
-          ) : (
-            <div className="grid md:grid-cols-1 lg:grid-cols-2">
-              <TextField
-                id="standard-basic"
-                sx={{ m: 1 }}
-                label="NOMBRE"
-                variant="standard"
-                focused
-                value={nombre}
-                onChange={(e) => {
-                  setNombre(e.target.value);
-                }}
-                autoFocus
-              />
-              <TextField
-                id="standard-basic"
-                sx={{ m: 1 }}
-                label="CORREO ELECTRONICO"
-                variant="standard"
-                focused
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
-            </div>
-          )}
-          <div className="grid grid-cols-1">
-            <Autocomplete
-              disablePortal
-              {...defaultOptions}
-              value={empresacontratante}
-              multiple={false}
-              sx={{ m: 1, width: "100%" }}
-              onChange={(e, newValue) => {
-                setEmpresacontratante(parseInt(newValue.id));
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="EMPRESA CONTRATANTE"
-                  variant="standard"
-                  focused
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={masive}
+                  onChange={(e) => {
+                    setMasive(e.target.checked);
+                  }}
                 />
-              )}
+              }
+              label="Inserción Masiva"
+            />
+          </FormGroup>
+        </div>
+        {masive ? (
+          <>
+            <div>
+              <FormLabel>Ingres tu archivo excel: </FormLabel>
+
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+              >
+                <input
+                  hidden
+                  type="file"
+                  name="file"
+                  onChange={(e) => {
+                    setFileData(e.target.files[0]);
+                  }}
+                />
+                <BackupIcon />
+              </IconButton>
+              <Button variant="contained" onClick={extractDataExcel}>
+                Cargar
+              </Button>
+            </div>
+          </>
+        ) : (
+          <div className="grid md:grid-cols-1 lg:grid-cols-2">
+            <TextField
+              id="standard-basic"
+              sx={{ m: 1 }}
+              label="NOMBRE"
+              variant="standard"
+              focused
+              value={nombre}
+              onChange={(e) => {
+                setNombre(e.target.value);
+              }}
+              autoFocus
+            />
+            <TextField
+              id="standard-basic"
+              sx={{ m: 1 }}
+              label="CORREO ELECTRONICO"
+              variant="standard"
+              focused
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
           </div>
-          <div>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={boolSendEmail}
-                    onChange={(e) => {
-                      setBoolSendEmail(e.target.checked);
-                    }}
-                  />
-                }
-                label="Enviar Correo"
+        )}
+        <div className="grid grid-cols-1">
+          <Autocomplete
+            disablePortal
+            {...defaultOptions}
+            value={empresacontratante}
+            multiple={false}
+            sx={{ m: 1, width: "100%" }}
+            onChange={(e, newValue) => {
+              setEmpresacontratante(parseInt(newValue.id));
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="EMPRESA CONTRATANTE"
+                variant="standard"
+                focused
               />
-            </FormGroup>
-          </div>
-          <div>
-            <Accordion sx={{ m: 1, width: "100%" }}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                Configuraciones Avanzadas
-              </AccordionSummary>
-              <AccordionDetails>
-                <MasDetalles />
-              </AccordionDetails>
-            </Accordion>
-          </div>
-          <div className="w-full m-1">
-            <Button
-              onClick={createUserAdmin}
-              className="w-full"
-              variant="contained"
-              color="primary"
-              endIcon={<SaveIcon />}
-            >
-              Guardar
-            </Button>
-          </div>
-
-          <ConfirmCreateUser open={openModal} />
+            )}
+          />
         </div>
-      )}
+        <div>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={boolSendEmail}
+                  onChange={(e) => {
+                    setBoolSendEmail(e.target.checked);
+                  }}
+                />
+              }
+              label="Enviar Correo"
+            />
+          </FormGroup>
+        </div>
+        <div>
+          <Accordion sx={{ m: 1, width: "100%" }}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              Configuraciones Avanzadas
+            </AccordionSummary>
+            <AccordionDetails>
+              <MasDetalles />
+            </AccordionDetails>
+          </Accordion>
+        </div>
+        <div className="w-full m-1">
+          <Button
+            onClick={createUserAdmin}
+            className="w-full"
+            variant="contained"
+            color="primary"
+            endIcon={<SaveIcon />}
+          >
+            Guardar
+          </Button>
+        </div>
+
+        <ConfirmCreateUser open={openModal} />
+      </div>
     </>
   );
 }

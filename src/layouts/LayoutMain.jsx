@@ -105,7 +105,6 @@ export default function LayoutMain({ classes }) {
   const [openList, setOpenList] = React.useState(false);
   const [openListBlackLists, setOpenListBlackLists] = React.useState(false);
 
-  // const loading = 
   const handleClick = () => {
     setOpenList(!openList);
   };
@@ -250,7 +249,6 @@ export default function LayoutMain({ classes }) {
 
           <Collapse in={openList} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-
               <NavLink to="/empresas">
                 <ListItemButton sx={{ pl: 8 }}>
                   <ListItemIcon>
@@ -281,7 +279,6 @@ export default function LayoutMain({ classes }) {
 
           <Collapse in={openListBlackLists} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-
               <NavLink to="/listasnegras69sat">
                 <ListItemButton sx={{ pl: 8 }}>
                   <ListItemIcon>
