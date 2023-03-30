@@ -111,7 +111,6 @@ export default function DashBoard({ classes }) {
   const [openList, setOpenList] = useState(false);
   const [openListBlackLists, setOpenListBlackLists] = useState(false);
   const [grupos, setGrupos] = useState([]);
-  // const loading =
   const handleClick = () => {
     setOpenList(!openList);
   };

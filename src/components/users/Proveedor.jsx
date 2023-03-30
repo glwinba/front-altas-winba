@@ -11,7 +11,6 @@ import axios from "axios";
 import MasDetalles from "./MasDetalles";
 import { useDispatch, useSelector } from "react-redux";
 import { setDataUsers, setLoading } from "../../actions";
-import Loading from "../Loading";
 import {
   Checkbox,
   FormControlLabel,
@@ -38,7 +37,6 @@ export default function Proveedor() {
   const [fileData, setFileData] = useState(null);
 
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.loading);
   const dataUsers = useSelector((state) => state.data_users);
 
   const defaultOptions = {
@@ -61,7 +59,7 @@ export default function Proveedor() {
         .post("http://127.0.0.1:5000/createuser", {
           dataExcel: dataUsers,
           EmpresaId: empresacontratante,
-          sendMail: boolSendEmail
+          sendMail: boolSendEmail,
         })
         .then((res) => {
           setOpenModal(true);
@@ -76,7 +74,7 @@ export default function Proveedor() {
           correocontratante1: correocontratante1,
           correocontratante2: correocontratante2,
           AreaServicio: areaServicio,
-          sendMail: boolSendEmail
+          sendMail: boolSendEmail,
         })
         .then((res) => {
           setOpenModal(true);
@@ -110,214 +108,199 @@ export default function Proveedor() {
 
   return (
     <>
-      {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <Loading />
-        </div>
-      ) : (
+      <div>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={masive}
+                onChange={(e) => {
+                  setMasive(e.target.checked);
+                }}
+              />
+            }
+            label="Inserción Masiva"
+          />
+        </FormGroup>
+      </div>
+
+      {masive ? (
         <>
           <div>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={masive}
-                    onChange={(e) => {
-                      setMasive(e.target.checked);
-                    }}
-                  />
-                }
-                label="Inserción Masiva"
-              />
-            </FormGroup>
-          </div>
+            <FormLabel>Ingres tu archivo excel: </FormLabel>
 
-          {masive ? (
-            <>
-              <div>
-                <FormLabel>Ingres tu archivo excel: </FormLabel>
-
-                <IconButton
-                  color="primary"
-                  aria-label="upload picture"
-                  component="label"
-                >
-                  <input
-                    hidden
-                    type="file"
-                    name="file"
-                    onChange={(e) => {
-                      setFileData(e.target.files[0]);
-                    }}
-                  />
-                  <BackupIcon />
-                </IconButton>
-                <Button variant="contained" onClick={extractDataExcel}>
-                  Cargar
-                </Button>
-              </div>
-              <div className="my-10">
-                <TableMultipleProveedor opciones={true} dataUsers={dataUsers} />
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4">
-                <div className="col">
-                  <TextField
-                    id="standard-basic"
-                    sx={{ m: 1, width: "25ch" }}
-                    label="RFC"
-                    variant="standard"
-                    focused
-                    value={rfc}
-                    onChange={(e) => {
-                      setRfc(e.target.value);
-                    }}
-                    autoFocus
-                  />
-                </div>
-
-                <div className="col">
-                  <TextField
-                    id="standard-basic"
-                    sx={{ m: 1, width: "25ch" }}
-                    label="CORREO ELECTRONICO"
-                    variant="standard"
-                    focused
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                  />
-                </div>
-
-                <div className="col col-span-2">
-                  <TextField
-                    sx={{ m: 1, width: "100%" }}
-                    id="standard-basic"
-                    label="RAZON SOCIAL"
-                    variant="standard"
-                    focused
-                    value={razonsocial}
-                    onChange={(e) => {
-                      setRazonsocial(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3">
-                <TextField
-                  id="standard-basic"
-                  sx={{ m: 1, width: "90%", marginX: "10px" }}
-                  label="CORREO CONTRATANTE 1"
-                  variant="standard"
-                  focused
-                  value={correocontratante1}
-                  onChange={(e) => {
-                    setCorreoContratante1(e.target.value);
-                  }}
-                />
-
-                <TextField
-                  id="standard-basic"
-                  sx={{ m: 1, width: "90%", marginX: "10px" }}
-                  label="CORREO CONTRATANTE 2"
-                  variant="standard"
-                  focused
-                  value={correocontratante2}
-                  onChange={(e) => {
-                    setCorreoContratante2(e.target.value);
-                  }}
-                />
-
-                <TextField
-                  id="standard-basic"
-                  sx={{ m: 1, width: "100%", marginX: "10px" }}
-                  label="Area de Servicio"
-                  variant="standard"
-                  focused
-                  value={areaServicio}
-                  onChange={(e) => {
-                    setAreaServicio(e.target.value);
-                  }}
-                />
-              </div>
-            </>
-          )}
-          <div className="grid grid-cols-1">
-            <Autocomplete
-              disablePortal
-              {...defaultOptions}
-              value={empresacontratante}
-              multiple={false}
-              sx={{ m: 1, width: "100%" }}
-              onChange={(e, newValue) => {
-                setEmpresacontratante(parseInt(newValue.id));
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="EMPRESA CONTRATANTE"
-                  variant="standard"
-                  focused
-                />
-              )}
-            />
-          </div>
-
-          <div>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={boolSendEmail}
-                    onChange={(e) => {
-                      setBoolSendEmail(e.target.checked);
-                    }}
-                  />
-                }
-                label="Enviar Correo"
-              />
-            </FormGroup>
-          </div>
-          <div>
-            <Accordion sx={{ m: 1, width: "100%" }}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                Configuraciones Avanzadas
-              </AccordionSummary>
-              <AccordionDetails>
-                <MasDetalles />
-              </AccordionDetails>
-            </Accordion>
-          </div>
-          <div className="w-full m-1">
-            <Button
-              onClick={createUser}
-              className="w-full"
-              variant="contained"
+            <IconButton
               color="primary"
-              endIcon={<SaveIcon />}
+              aria-label="upload picture"
+              component="label"
             >
-              Guardar
+              <input
+                hidden
+                type="file"
+                name="file"
+                onChange={(e) => {
+                  setFileData(e.target.files[0]);
+                }}
+              />
+              <BackupIcon />
+            </IconButton>
+            <Button variant="contained" onClick={extractDataExcel}>
+              Cargar
             </Button>
           </div>
+          <div className="my-10">
+            <TableMultipleProveedor opciones={true} dataUsers={dataUsers} />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4">
+            <div className="col">
+              <TextField
+                id="standard-basic"
+                sx={{ m: 1, width: "25ch" }}
+                label="RFC"
+                variant="standard"
+                focused
+                value={rfc}
+                onChange={(e) => {
+                  setRfc(e.target.value);
+                }}
+                autoFocus
+              />
+            </div>
 
-          <ConfirmCreateUser open={openModal} />
+            <div className="col">
+              <TextField
+                id="standard-basic"
+                sx={{ m: 1, width: "25ch" }}
+                label="CORREO ELECTRONICO"
+                variant="standard"
+                focused
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </div>
+
+            <div className="col col-span-2">
+              <TextField
+                sx={{ m: 1, width: "100%" }}
+                id="standard-basic"
+                label="RAZON SOCIAL"
+                variant="standard"
+                focused
+                value={razonsocial}
+                onChange={(e) => {
+                  setRazonsocial(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3">
+            <TextField
+              id="standard-basic"
+              sx={{ m: 1, width: "90%", marginX: "10px" }}
+              label="CORREO CONTRATANTE 1"
+              variant="standard"
+              focused
+              value={correocontratante1}
+              onChange={(e) => {
+                setCorreoContratante1(e.target.value);
+              }}
+            />
+
+            <TextField
+              id="standard-basic"
+              sx={{ m: 1, width: "90%", marginX: "10px" }}
+              label="CORREO CONTRATANTE 2"
+              variant="standard"
+              focused
+              value={correocontratante2}
+              onChange={(e) => {
+                setCorreoContratante2(e.target.value);
+              }}
+            />
+
+            <TextField
+              id="standard-basic"
+              sx={{ m: 1, width: "100%", marginX: "10px" }}
+              label="Area de Servicio"
+              variant="standard"
+              focused
+              value={areaServicio}
+              onChange={(e) => {
+                setAreaServicio(e.target.value);
+              }}
+            />
+          </div>
         </>
       )}
+      <div className="grid grid-cols-1">
+        <Autocomplete
+          disablePortal
+          {...defaultOptions}
+          value={empresacontratante}
+          multiple={false}
+          sx={{ m: 1, width: "100%" }}
+          onChange={(e, newValue) => {
+            setEmpresacontratante(parseInt(newValue.id));
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="EMPRESA CONTRATANTE"
+              variant="standard"
+              focused
+            />
+          )}
+        />
+      </div>
+
+      <div>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={boolSendEmail}
+                onChange={(e) => {
+                  setBoolSendEmail(e.target.checked);
+                }}
+              />
+            }
+            label="Enviar Correo"
+          />
+        </FormGroup>
+      </div>
+      <div>
+        <Accordion sx={{ m: 1, width: "100%" }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            Configuraciones Avanzadas
+          </AccordionSummary>
+          <AccordionDetails>
+            <MasDetalles />
+          </AccordionDetails>
+        </Accordion>
+      </div>
+      <div className="w-full m-1">
+        <Button
+          onClick={createUser}
+          className="w-full"
+          variant="contained"
+          color="primary"
+          endIcon={<SaveIcon />}
+        >
+          Guardar
+        </Button>
+      </div>
+
+      <ConfirmCreateUser open={openModal} />
     </>
   );
 }

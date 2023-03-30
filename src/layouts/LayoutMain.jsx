@@ -23,13 +23,14 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import BusinessIcon from '@mui/icons-material/Business';
-import ApartmentIcon from '@mui/icons-material/Apartment';
+import BusinessIcon from "@mui/icons-material/Business";
+import ApartmentIcon from "@mui/icons-material/Apartment";
 import Loading from "../components/Loading";
-import LockPersonIcon from '@mui/icons-material/LockPerson';
-import VpnKeyIcon from '@mui/icons-material/VpnKey';
-import SdCardAlertIcon from '@mui/icons-material/SdCardAlert';
-import ArticleIcon from '@mui/icons-material/Article';
+import LockPersonIcon from "@mui/icons-material/LockPerson";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import SdCardAlertIcon from "@mui/icons-material/SdCardAlert";
+import ArticleIcon from "@mui/icons-material/Article";
+import { useSelector } from "react-redux";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -105,8 +106,8 @@ export default function LayoutMain({ classes }) {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openList, setOpenList] = React.useState(false);
   const [openListBlackLists, setOpenListBlackLists] = React.useState(false);
+  const loading = useSelector((state) => state.loading);
 
-  // const loading = 
   const handleClick = () => {
     setOpenList(!openList);
   };
@@ -251,7 +252,6 @@ export default function LayoutMain({ classes }) {
 
           <Collapse in={openList} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-
               <NavLink to="/empresas">
                 <ListItemButton sx={{ pl: 8 }}>
                   <ListItemIcon>
@@ -282,7 +282,6 @@ export default function LayoutMain({ classes }) {
 
           <Collapse in={openListBlackLists} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-
               <NavLink to="/listasnegras69sat">
                 <ListItemButton sx={{ pl: 8 }}>
                   <ListItemIcon>
@@ -319,9 +318,20 @@ export default function LayoutMain({ classes }) {
         style={{ background: "rgb(229, 231, 235)", minHeight: "100vh" }}
       >
         <div className="mt-24 mb-10 mx-28 h-full bg-white p-6 rounded-md border border-gray-300 shadow-xl">
-          {/* {loading ? () : ()} */}
-          <Outlet />
-          {/* <Loading/> */}
+          {loading ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+              }}
+            >
+              <Loading />
+            </div>
+          ) : (
+            <Outlet />
+          )}
         </div>
       </div>
     </Box>

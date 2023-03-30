@@ -4,30 +4,27 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
-import Loading from "../components/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../actions";
-import BusinessIcon from '@mui/icons-material/Business';
+import BusinessIcon from "@mui/icons-material/Business";
 
 function Empresas() {
   const [empresas, setEmpresas] = useState([]);
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.loading);
 
   const columns = [
     { name: "id", options: { filter: false, display: false } },
     { name: "rfc", options: { filter: false } },
     { name: "nombre", options: { filter: false } },
-    { name: "Grupo", options: {
-      filter: false,
-      customBodyRender: (value, tableMeta, updateValue) => {
-        return (
-          <>
-            {value.nombre}
-          </>
-        );
+    {
+      name: "Grupo",
+      options: {
+        filter: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return <>{value.nombre}</>;
+        },
       },
-    }, },
+    },
     {
       name: "ACCIONES",
       options: {
@@ -44,7 +41,7 @@ function Empresas() {
                   Editar
                 </Button>
               </NavLink>
-              
+
               <Button
                 variant="contained"
                 sx={{ backgroundColor: "red", marginX: "2px" }}
@@ -85,43 +82,28 @@ function Empresas() {
 
   return (
     <>
-      {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <Loading />
-        </div>
-      ) : (
-        <>
-          <div className="flex flex-1 items-center justify-between">
-            <div className="flex w-full justify-end">
-              <div className="mb-4">
-                <NavLink to="/createcompanies">
-                  <Button
-                    color="success"
-                    variant="contained"
-                    endIcon={<BusinessIcon />}
-                  >
-                    Añadir Empresa
-                  </Button>
-                </NavLink>
-              </div>
-            </div>
+      <div className="flex flex-1 items-center justify-between">
+        <div className="flex w-full justify-end">
+          <div className="mb-4">
+            <NavLink to="/createcompanies">
+              <Button
+                color="success"
+                variant="contained"
+                endIcon={<BusinessIcon />}
+              >
+                Añadir Empresa
+              </Button>
+            </NavLink>
           </div>
+        </div>
+      </div>
 
-          <MUIDataTable
-            title={"Lista de empresas"}
-            data={empresas}
-            columns={columns}
-            options={options}
-          />
-        </>
-      )}
+      <MUIDataTable
+        title={"Lista de empresas"}
+        data={empresas}
+        columns={columns}
+        options={options}
+      />
     </>
   );
 }

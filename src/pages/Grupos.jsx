@@ -4,15 +4,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
-import Loading from "../components/Loading";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setLoading } from "../actions";
-import ApartmentIcon from '@mui/icons-material/Apartment';
+import ApartmentIcon from "@mui/icons-material/Apartment";
 
 function Grupos() {
   const [grupos, setGrupos] = useState([]);
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.loading);
 
   const columns = [
     { name: "id", options: { filter: false, display: false } },
@@ -75,43 +73,28 @@ function Grupos() {
 
   return (
     <>
-      {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <Loading />
-        </div>
-      ) : (
-        <>
-          <div className="flex flex-1 items-center justify-between">
-            <div className="flex w-full justify-end">
-              <div className="mb-4">
-                <NavLink to="/creategroups">
-                  <Button
-                    color="success"
-                    variant="contained"
-                    endIcon={<ApartmentIcon />}
-                  >
-                    Añadir Grupo
-                  </Button>
-                </NavLink>
-              </div>
-            </div>
+      <div className="flex flex-1 items-center justify-between">
+        <div className="flex w-full justify-end">
+          <div className="mb-4">
+            <NavLink to="/creategroups">
+              <Button
+                color="success"
+                variant="contained"
+                endIcon={<ApartmentIcon />}
+              >
+                Añadir Grupo
+              </Button>
+            </NavLink>
           </div>
+        </div>
+      </div>
 
-          <MUIDataTable
-            title={"Lista de grupos"}
-            data={grupos}
-            columns={columns}
-            options={options}
-          />
-        </>
-      )}
+      <MUIDataTable
+        title={"Lista de grupos"}
+        data={grupos}
+        columns={columns}
+        options={options}
+      />
     </>
   );
 }
