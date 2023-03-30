@@ -40,11 +40,11 @@ export default function Admin() {
     dispatch(setLoading(false));
   }
 
-  const readExcel = async () => {
+  const extractDataExcel = async () => {
     dispatch(setLoading(true));
 
     const dataExcel = await axios.post(
-      "http://127.0.0.1:5000/readExcel",
+      "http://127.0.0.1:5000/extractdataexcel",
       {
         file: fileData,
       },
@@ -136,7 +136,7 @@ export default function Admin() {
                   />
                   <BackupIcon />
                 </IconButton>
-                <Button variant="contained" onClick={readExcel}>
+                <Button variant="contained" onClick={extractDataExcel}>
                   Cargar
                 </Button>
               </div>
