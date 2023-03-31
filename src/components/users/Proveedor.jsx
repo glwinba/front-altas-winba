@@ -36,7 +36,7 @@ export default function Proveedor() {
   const [openModal, setOpenModal] = useState(false);
   const [masive, setMasive] = useState(false);
   const [fileData, setFileData] = useState(null);
-
+  const [mailCC, setMailCC] = useState("")
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.loading);
   const dataUsers = useSelector((state) => state.data_users);
@@ -61,7 +61,7 @@ export default function Proveedor() {
         .post("http://127.0.0.1:5000/createuser", {
           dataExcel: dataUsers,
           EmpresaId: empresacontratante,
-          sendMail: boolSendEmail
+          sendMail: boolSendEmail,
         })
         .then((res) => {
           setOpenModal(true);
@@ -76,7 +76,7 @@ export default function Proveedor() {
           correocontratante1: correocontratante1,
           correocontratante2: correocontratante2,
           AreaServicio: areaServicio,
-          sendMail: boolSendEmail
+          sendMail: boolSendEmail,
         })
         .then((res) => {
           setOpenModal(true);
@@ -242,7 +242,7 @@ export default function Proveedor() {
                 <TextField
                   id="standard-basic"
                   sx={{ m: 1, width: "100%", marginX: "10px" }}
-                  label="Area de Servicio"
+                  label="AREA DE SERVICIO"
                   variant="standard"
                   focused
                   value={areaServicio}
@@ -253,25 +253,40 @@ export default function Proveedor() {
               </div>
             </>
           )}
-          <div className="grid grid-cols-1">
-            <Autocomplete
-              disablePortal
-              {...defaultOptions}
-              value={empresacontratante}
-              multiple={false}
-              sx={{ m: 1, width: "100%" }}
-              onChange={(e, newValue) => {
-                setEmpresacontratante(parseInt(newValue.id));
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="EMPRESA CONTRATANTE"
-                  variant="standard"
-                  focused
-                />
-              )}
-            />
+          <div className="grid grid-cols-4">
+            <div className="col-span-3">
+              <Autocomplete
+                disablePortal
+                {...defaultOptions}
+                value={empresacontratante}
+                multiple={false}
+                sx={{ m: 1 }}
+                onChange={(e, newValue) => {
+                  setEmpresacontratante(parseInt(newValue.id));
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="EMPRESA CONTRATANTE"
+                    variant="standard"
+                    focused
+                  />
+                )}
+              />
+            </div>
+            <div>
+              <TextField
+                id="standard-basic"
+                sx={{ m: 1, width: "100%", marginX: "10px" }}
+                label="CC"
+                variant="standard"
+                focused
+                value={mailCC}
+                onChange={(e) => {
+                  setMailCC(e.target.value);
+                }}
+              />
+            </div>
           </div>
 
           <div>
