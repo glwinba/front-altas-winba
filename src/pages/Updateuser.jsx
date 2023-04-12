@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import React from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useState } from "react";
 import UpdateEmail from "../components/users/UpdateEmail";
 import ApartmentIcon from "@mui/icons-material/Apartment";
@@ -71,7 +71,7 @@ function Updateuser() {
           title: "Actualizado!!!",
           html: "El usuario fue actualizado correctamente",
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
       }
     });
@@ -209,13 +209,16 @@ function Updateuser() {
                       </span>
                     </div>
                     <div className="ml-4 flex-shrink-0">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{ marginX: "2px" }}
-                      >
-                        Editar
-                      </Button>
+                      <NavLink to={"/editar-operador"}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          sx={{ marginX: "2px" }}
+                        >
+                          Editar
+                        </Button>
+                      </NavLink>
+
                       <Button
                         variant="contained"
                         sx={{ backgroundColor: "red", marginX: "2px" }}

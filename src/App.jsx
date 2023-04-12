@@ -11,6 +11,7 @@ import CreateCompanies from "./pages/CreateCompany";
 import BlackLists69SAT from "./pages/ListasNegras/69SAT/BlackList69SAT";
 import CreateSupposed from "./pages/ListasNegras/69SAT/CreateSupposeds";
 import DashBoard from "./pages/DashBoard";
+import EditOperator from "./pages/serv_esp/EditOperator";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/updateuser/:id" element={<Updateuser />} />
             <Route path="/listasnegras69sat" element={<BlackLists69SAT />} />
             <Route path="/crear-supuesto" element={<CreateSupposed />} />
+            <Route path="/editar-operador" element={<EditOperator />} />+
           </Route>
         </Routes>
       </BrowserRouter>
