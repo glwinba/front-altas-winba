@@ -4,9 +4,15 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setLoading } from "../../actions";
 import ModalCompanyCreate from "./modals/ModalCompanyCreate";
+import { Checkbox, FormControlLabel } from "@mui/material";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function IndividualCreateCompany() {
   const [grupos, setGrupos] = useState([]);
@@ -16,39 +22,70 @@ export default function IndividualCreateCompany() {
   const [comentarios, setComentarios] = useState(null);
   const [grupocontratante, setGrupoContratante] = useState(grupos[0]);
   const [openModal, setOpenModal] = useState(false);
-
+  const [bajaCheck, setBajaCheck] = useState(true);
+  const [categoryMateriality, setCategoryMaterialty] = useState([]);
+  const [categoryMaterialitySelect, setCategoryMaterialtySelect] = useState(
+    categoryMateriality[0]
+  );
+  const [companieTypes, setCompanieTypes] = useState([]);
+  const [companieTypesSelect, setCompanieTypesSelect] = useState(
+    companieTypes[0]
+  );
   const dispatch = useDispatch();
+
+  
 
   const defaultOptions = {
     options: grupos.length > 0 ? grupos : [],
     getOptionLabel: (options) => options.nombre,
   };
 
-  function getGrupos() {
-    axios.get("http://127.0.0.1:5000/getGrupos").then((res) => {
-      setGrupos(res.data);
-      dispatch(setLoading(false));
-    });
-  }
+  const defaultOptionsTypeCompanie = {
+    options: companieTypes.length > 0 ? companieTypes : [],
+    getOptionLabel: (options) => options.type,
+  };
 
-  const createCompany = () => {
-    axios
-      .post("http://127.0.0.1:5000/createcompany", {
-        rfc: rfc,
-        nombre: nombre,
-        ciec: ciec,
-        GrupoId: grupocontratante,
-        comentarios: comentarios,
-      })
-      .then((res) => {
-        console.log(res);
-        setOpenModal(true);
-      });
+  const defaultOptionsCategoryMateriality = {
+    options: categoryMateriality.length > 0 ? categoryMateriality : [],
+    getOptionLabel: (options) => options.Nombre,
+  };
+
+  const getGrupos = async () => {
+    const res = await axios.get("http://127.0.0.1:5000/getGrupos");
+    setGrupos(res.data);
+  };
+
+  const getCategoryMateriality = async () => {
+    const res = await axios.get("http://127.0.0.1:5000/getCategoryMateriality");
+    setCategoryMaterialty(res.data);
+  };
+
+  const getCompanieTypes = async () => {
+    const res = await axios.get("http://127.0.0.1:5000/listTypeCompanies");
+    setCompanieTypes(res.data);
+  };
+
+  const createCompany = async () => {
+    await axios.post("http://127.0.0.1:5000/createcompany", {
+      rfc: rfc,
+      nombre: nombre,
+      ciec: ciec,
+      GrupoId: grupocontratante,
+      comentarios: comentarios,
+      bajaCheck: bajaCheck,
+      companieTypesSelect: companieTypesSelect,
+      categoryMaterialitySelect: categoryMaterialitySelect,
+    });
+
+    setOpenModal(true);
   };
 
   useEffect(() => {
     dispatch(setLoading(true));
     getGrupos();
+    getCategoryMateriality();
+    getCompanieTypes();
+    dispatch(setLoading(false));
   }, []);
 
   return (
@@ -98,7 +135,7 @@ export default function IndividualCreateCompany() {
               {...defaultOptions}
               value={grupocontratante}
               multiple={false}
-              sx={{ m: 1, width: "100%", paddingRight: "30px" }}
+              sx={{ m: 1 }}
               onChange={(e, newValue) => {
                 setGrupoContratante(parseInt(newValue.id));
               }}
@@ -117,6 +154,7 @@ export default function IndividualCreateCompany() {
               id="outlined-multiline-static"
               label="COMENTARIOS"
               multiline
+              sx={{ m: 1 }}
               rows={4}
               variant="standard"
               focused
@@ -124,6 +162,81 @@ export default function IndividualCreateCompany() {
               onChange={(e) => {
                 setComentarios(e.target.value);
               }}
+            />
+          </div>
+          <div className="grid grid-cols-2">
+            <Autocomplete
+              multiple
+              id="checkboxes-tags-demo"
+              disableCloseOnSelect
+              sx={{ m: 1 }}
+              {...defaultOptionsTypeCompanie}
+              onChange={(e, newValue) => {
+                setCompanieTypesSelect(newValue);
+              }}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox
+                    icon={icon}
+                    checkedIcon={checkedIcon}
+                    style={{ marginRight: 8 }}
+                    checked={selected}
+                  />
+                  {option.type}
+                </li>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="TIPO EMPRESA"
+                  variant="standard"
+                  focused
+                />
+              )}
+            />
+
+            <Autocomplete
+              multiple
+              id="checkboxes-tags-demo"
+              disableCloseOnSelect
+              sx={{ m: 1 }}
+              {...defaultOptionsCategoryMateriality}
+              onChange={(e, newValue) => {
+                setCategoryMaterialtySelect(newValue);
+              }}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox
+                    icon={icon}
+                    checkedIcon={checkedIcon}
+                    style={{ marginRight: 8 }}
+                    checked={selected}
+                  />
+                  {option.Nombre}
+                </li>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="CATEGORIA MATERIALIDAD"
+                  variant="standard"
+                  focused
+                />
+              )}
+            />
+          </div>
+          <div>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={bajaCheck}
+                  sx={{ m: 1 }}
+                  onChange={(e) => {
+                    setBajaCheck(e.target.checked);
+                  }}
+                />
+              }
+              label="Empresa Baja"
             />
           </div>
         </div>

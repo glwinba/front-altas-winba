@@ -19,7 +19,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 export default function AddEmpresaUsuario({ open, handleCloseModal, user, getUserEmpresa }) {
   const [empresas, setEmpresas] = useState([]);
   const [empresacontratante, setEmpresacontratante] = useState(empresas[0]);
-  const [areaservicio, setAreaServicio] = useState([]);
 
   const defaultOptions = {
     options: empresas.length > 0 ? empresas : [],
