@@ -56,13 +56,18 @@ export default function CreateCompanies() {
 
       </Box>
         <Tabs value={valueProveedor} onChange={handleChangeProveedor} aria-label="basic tabs example">
-          <Tab label="Individual" {...allyPropsCompany(0)} />
-          <Tab label="Multiple" {...allyPropsCompany(1)} />
+          <Tab label="Añadir Empresa" {...allyPropsCompany(0)} />
+          <Tab label="Añadir Empresa Baja" {...allyPropsCompany(1)} />
+          <Tab label="Añadir Categoria Empresa" {...allyPropsCompany(2)} />
+
         </Tabs>
         <TabPanel value={valueProveedor} index={0}>
             <IndividualCreateCompany/>
         </TabPanel>
         <TabPanel value={valueProveedor} index={1}>
+          Hola mundo
+        </TabPanel>
+        <TabPanel value={valueProveedor} index={2}>
           Hola mundo
         </TabPanel>
     </Box>

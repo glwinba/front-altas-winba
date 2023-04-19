@@ -21,6 +21,11 @@ import {
 } from "@mui/material";
 import BackupIcon from "@mui/icons-material/Backup";
 import ConfirmCreateUser from "../modals/ConfirmCreateUser";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function Admin() {
   const [empresas, setEmpresas] = useState([]);
@@ -33,6 +38,9 @@ export default function Admin() {
   const [boolSendEmail, setBoolSendEmail] = useState(true);
   const [masive, setMasive] = useState(false);
   const [fileData, setFileData] = useState(null);
+  const [permissions, setPermissions] = useState([]);
+  const [permissionsSelect, setPermissionsSelect] = useState([]);
+
   const dispatch = useDispatch();
 
   const defaultOptions = {
@@ -40,10 +48,19 @@ export default function Admin() {
     getOptionLabel: (options) => options.nombre,
   };
 
+  const defaultOptionsPermission = {
+    options: permissions.length > 0 ? permissions : [],
+    getOptionLabel: (options) => options.Nombre,
+  };
+
   const getEmpresas = async () => {
     const data = await axios.get("http://127.0.0.1:5000/empresasallselect");
     setEmpresas(data.data);
-    dispatch(setLoading(false));
+  };
+
+  const getPermission = async () => {
+    const res = await axios.get("http://127.0.0.1:5000/getpermission");
+    setPermissions(res.data);
   };
 
   const extractDataExcel = async () => {
@@ -72,6 +89,7 @@ export default function Admin() {
         dataExcel: dataUsers,
         EmpresaId: empresacontratante,
         sendMail: boolSendEmail,
+        permissions: permissionsSelect
       });
       dispatch(setLoading(false));
       setOpenModal(true);
@@ -81,6 +99,7 @@ export default function Admin() {
         NOMBRE: nombre,
         EmpresaId: empresacontratante,
         sendMail: boolSendEmail,
+        permissions: permissionsSelect
       });
       dispatch(setLoading(false));
       setOpenModal(true);
@@ -90,6 +109,8 @@ export default function Admin() {
   useEffect(() => {
     dispatch(setLoading(true));
     getEmpresas();
+    getPermission();
+    dispatch(setLoading(false));
   }, []);
 
   return (
@@ -174,13 +195,13 @@ export default function Admin() {
               />
             </div>
           )}
-          <div className="grid grid-cols-1">
+          <div className="grid grid-cols-2">
             <Autocomplete
               disablePortal
               {...defaultOptions}
               value={empresacontratante}
               multiple={false}
-              sx={{ m: 1, width: "100%" }}
+              sx={{ m: 1 }}
               onChange={(e, newValue) => {
                 setEmpresacontratante(parseInt(newValue.id));
               }}
@@ -188,6 +209,36 @@ export default function Admin() {
                 <TextField
                   {...params}
                   label="EMPRESA CONTRATANTE"
+                  variant="standard"
+                  focused
+                />
+              )}
+            />
+
+            <Autocomplete
+              multiple
+              id="checkboxes-tags-demo"
+              disableCloseOnSelect
+              sx={{ m: 1 }}
+              {...defaultOptionsPermission}
+              onChange={(e, newValue) => {
+                setPermissionsSelect(newValue);
+              }}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox
+                    icon={icon}
+                    checkedIcon={checkedIcon}
+                    style={{ marginRight: 8 }}
+                    checked={selected}
+                  />
+                  {option.Nombre}
+                </li>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="PERMISOS"
                   variant="standard"
                   focused
                 />
