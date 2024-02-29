@@ -61,7 +61,7 @@ function Grupos() {
   const getGrupos = () => {
     dispatch(setLoading(true));
 
-    axios.get("http://127.0.0.1:5000/getGrupos").then((res) => {
+    axios.get("http://127.0.0.1:3000/getGrupos").then((res) => {
       setGrupos(res.data);
       dispatch(setLoading(false));
     });

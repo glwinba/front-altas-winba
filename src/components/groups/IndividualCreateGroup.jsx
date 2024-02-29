@@ -12,7 +12,7 @@ export default function IndividualCreateGroup() {
 
   const createGroup = () => {
     axios
-      .post("http://127.0.0.1:5000/createGrupos", {
+      .post("http://127.0.0.1:3000/createGrupos", {
         nombre: nombre,
         comentarios: comentarios,
       })

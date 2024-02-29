@@ -35,7 +35,7 @@ export default function AddEmpresaUsuario({ open, handleCloseModal, user, getUse
   };
 
   function getEmpresas() {
-    axios.get("http://127.0.0.1:5000/empresasallselect").then((res) => {
+    axios.get("http://127.0.0.1:3000/empresasallselect").then((res) => {
       setEmpresas(res.data);
     });
   }
@@ -43,7 +43,7 @@ export default function AddEmpresaUsuario({ open, handleCloseModal, user, getUse
   const handleClick = async () => {
     console.log(user)
     console.log(empresacontratante)
-    await axios.post(`http://localhost:5000/createoperatobyuserproveedor`, {
+    await axios.post(`http://localhost:3000/createoperatobyuserproveedor`, {
       usuario: user,
       EmpresaId: empresacontratante
     });

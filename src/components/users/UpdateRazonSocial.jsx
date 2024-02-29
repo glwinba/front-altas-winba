@@ -21,7 +21,7 @@ export default function UpdateRazonSocial({ open, email, id, handleCloseModal })
   };
 
   const handleClick = async () => {
-    await axios.put(`http://localhost:5000/updateEmail/${id}`, {
+    await axios.put(`http://localhost:3000/updateEmail/${id}`, {
         EMAIL: newEmail
     });
     handleCloseModal();

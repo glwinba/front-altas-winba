@@ -181,7 +181,7 @@ export default function DashBoard({ classes }) {
 
   const getGrupos = () => {
 
-    axios.get("http://127.0.0.1:5000/getGrupos").then((res) => {
+    axios.get("http://127.0.0.1:3000/getGrupos").then((res) => {
       setGrupos(res.data);
     });
   };

@@ -60,7 +60,7 @@ function TableLog() {
     // dispatch(setLoading(true));
 
     axios
-      .get("http://localhost:5000/api/historyBlackLists69SAT")
+      .get("http://localhost:3000/api/historyBlackLists69SAT")
       .then((res) => {
         setData(res.data);
         //   dispatch(setLoading(false));

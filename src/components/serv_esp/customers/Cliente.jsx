@@ -42,7 +42,7 @@ export default function Cliente() {
   };
 
   function getEmpresas() {
-    axios.get("http://127.0.0.1:5000/empresasallselect").then((res) => {
+    axios.get("http://127.0.0.1:3000/empresasallselect").then((res) => {
       setEmpresas(res.data);
       dispatch(setLoading(false));
     });
@@ -52,7 +52,7 @@ export default function Cliente() {
     dispatch(setLoading(true));
 
     const dataExcel = await axios.post(
-      "http://127.0.0.1:5000/extractdataexcel",
+      "http://127.0.0.1:3000/extractdataexcel",
       {
         file: fileData,
       },
@@ -72,7 +72,7 @@ export default function Cliente() {
 
     if (masive) {
       axios
-        .post("http://127.0.0.1:5000/createusercustomer", {
+        .post("http://127.0.0.1:3000/createusercustomer", {
           dataExcel: dataUsers,
           EmpresaId: empresacontratante,
           sendMail: boolSendEmail,
@@ -83,7 +83,7 @@ export default function Cliente() {
         });
     } else {
       axios
-        .post("http://127.0.0.1:5000/createusercustomer", {
+        .post("http://127.0.0.1:3000/createusercustomer", {
           RFC: rfc,
           NOMBRE: razonsocial,
           EMAIL: email,

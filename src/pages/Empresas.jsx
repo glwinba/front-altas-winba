@@ -70,7 +70,7 @@ function Empresas() {
   const getEmpresa = () => {
     dispatch(setLoading(true));
 
-    axios.get("http://127.0.0.1:5000/getEmpresas").then((res) => {
+    axios.get("http://127.0.0.1:3000/getEmpresas").then((res) => {
       setEmpresas(res.data);
       dispatch(setLoading(false));
     });

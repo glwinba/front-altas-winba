@@ -20,13 +20,13 @@ function Updateuser() {
   const [empresaModal, setEmpresaModal] = useState(false);
 
   function getUser() {
-    axios.get(`http://127.0.0.1:5000/getUser/${id}`).then((res) => {
+    axios.get(`http://127.0.0.1:3000/getUser/${id}`).then((res) => {
       setUser(res.data);
     });
   }
 
   function getUserEmpresa() {
-    axios.get(`http://127.0.0.1:5000/getuserempresa/${id}`).then((res) => {
+    axios.get(`http://127.0.0.1:3000/getuserempresa/${id}`).then((res) => {
       setEmpresas(res.data);
     });
   }
@@ -64,7 +64,7 @@ function Updateuser() {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await axios.put(`http://localhost:5000/updatePassword/${id}`);
+        await axios.put(`http://localhost:3000/updatePassword/${id}`);
 
         Swal.fire({
           icon: "success",

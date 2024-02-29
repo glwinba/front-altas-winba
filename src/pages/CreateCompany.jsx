@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
 import IndividualCreateCompany from '../components/companies/IndividualCreateCompany';
+import CreateCompanyBaja from '../components/companies/CreateCompanyBaja';
+import CreateCategoryCompanie from '../components/companies/CreateCategoryCompanie';
 
 function TabPanel(props) {
   const { children, value, index, valueProveedor, ...other } = props;
@@ -65,10 +67,10 @@ export default function CreateCompanies() {
             <IndividualCreateCompany/>
         </TabPanel>
         <TabPanel value={valueProveedor} index={1}>
-          Hola mundo
+          <CreateCompanyBaja/>
         </TabPanel>
         <TabPanel value={valueProveedor} index={2}>
-          Hola mundo
+          <CreateCategoryCompanie/>
         </TabPanel>
     </Box>
   );

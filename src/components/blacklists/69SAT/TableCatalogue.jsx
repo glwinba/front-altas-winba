@@ -81,7 +81,7 @@ function TableCatalogue() {
   const getData = () => {
     // dispatch(setLoading(true));
 
-    axios.get("http://localhost:5000/api/getcataloguelist69SAT").then((res) => {
+    axios.get("http://localhost:3000/api/getcataloguelist69SAT").then((res) => {
         setData(res.data);
     //   dispatch(setLoading(false));
     });

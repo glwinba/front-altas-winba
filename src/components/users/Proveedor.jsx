@@ -47,7 +47,7 @@ export default function Proveedor() {
   };
 
   function getEmpresas() {
-    axios.get("http://127.0.0.1:5000/empresasallselect").then((res) => {
+    axios.get("http://127.0.0.1:3000/empresasallselect").then((res) => {
       setEmpresas(res.data);
       dispatch(setLoading(false));
     });
@@ -59,7 +59,7 @@ export default function Proveedor() {
 
     if (masive) {
       axios
-        .post("http://127.0.0.1:5000/createuser", {
+        .post("http://127.0.0.1:3000/createuser", {
           dataExcel: dataUsers,
           EmpresaId: empresacontratante,
           sendMail: boolSendEmail,
@@ -70,7 +70,7 @@ export default function Proveedor() {
         });
     } else {
       axios
-        .post("http://127.0.0.1:5000/createuser", {
+        .post("http://127.0.0.1:3000/createuser", {
           RFC: rfc,
           NOMBRE: razonsocial,
           EMAIL: email,
@@ -92,7 +92,7 @@ export default function Proveedor() {
     dispatch(setLoading(true));
 
     const dataExcel = await axios.post(
-      "http://127.0.0.1:5000/extractdataexcel",
+      "http://127.0.0.1:3000/extractdataexcel",
       {
         file: fileData,
       },
@@ -163,7 +163,7 @@ export default function Proveedor() {
                   />
                   <BackupIcon />
                 </IconButton>
-                <Button variant="contained" onClick={extractDataExcel}>
+                <Button variant="contained" disabled={!fileData} onClick={extractDataExcel}>
                   Cargar
                 </Button>
               </div>

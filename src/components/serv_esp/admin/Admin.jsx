@@ -54,12 +54,12 @@ export default function Admin() {
   };
 
   const getEmpresas = async () => {
-    const data = await axios.get("http://127.0.0.1:5000/empresasallselect");
+    const data = await axios.get("http://127.0.0.1:3000/empresasallselect");
     setEmpresas(data.data);
   };
 
   const getPermission = async () => {
-    const res = await axios.get("http://127.0.0.1:5000/getpermission");
+    const res = await axios.get("http://127.0.0.1:3000/getpermission");
     setPermissions(res.data);
   };
 
@@ -67,7 +67,7 @@ export default function Admin() {
     dispatch(setLoading(true));
 
     const dataExcel = await axios.post(
-      "http://127.0.0.1:5000/extractdataexcel",
+      "http://127.0.0.1:3000/extractdataexcel",
       {
         file: fileData,
       },
@@ -85,7 +85,7 @@ export default function Admin() {
   const createUserAdmin = async () => {
     dispatch(setLoading(true));
     if (masive) {
-      await axios.post("http://127.0.0.1:5000/createuseradmin", {
+      await axios.post("http://127.0.0.1:3000/createuseradmin", {
         dataExcel: dataUsers,
         EmpresaId: empresacontratante,
         sendMail: boolSendEmail,
@@ -94,7 +94,7 @@ export default function Admin() {
       dispatch(setLoading(false));
       setOpenModal(true);
     } else {
-      await axios.post("http://127.0.0.1:5000/createuseradmin", {
+      await axios.post("http://127.0.0.1:3000/createuseradmin", {
         EMAIL: email,
         NOMBRE: nombre,
         EmpresaId: empresacontratante,

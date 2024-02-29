@@ -55,28 +55,28 @@ export default function IndividualCreateCompany() {
   };
 
   const getGrupos = async () => {
-    const res = await axios.get("http://127.0.0.1:5000/getGrupos");
+    const res = await axios.get("http://127.0.0.1:3000/getGrupos");
     setGrupos(res.data);
   };
 
   const getCategoryMateriality = async () => {
-    const res = await axios.get("http://127.0.0.1:5000/getCategoryMateriality");
+    const res = await axios.get("http://127.0.0.1:3000/getCategoryMaterialityClient");
     setCategoryMaterialty(res.data);
   };
 
   const getCompanieTypes = async () => {
-    const res = await axios.get("http://127.0.0.1:5000/listTypeCompanies");
+    const res = await axios.get("http://127.0.0.1:3000/listTypeCompanies");
     setCompanieTypes(res.data);
   };
 
   // const download = async () => {
-  //   const res = await axios.get("http://127.0.0.1:5000/generateExcel");
+  //   const res = await axios.get("http://127.0.0.1:3000/generateExcel");
   // };
 
   const createCompany = async () => {
     dispatch(setLoading(true));
     if (masive) {
-      await axios.post("http://127.0.0.1:5000/createcompanycompletemasive", {
+      await axios.post("http://127.0.0.1:3000/createcompanycompletemasive", {
         fileData: dataCompanies,
         GrupoId: grupocontratante,
         bajaCheck: bajaCheck,
@@ -85,7 +85,7 @@ export default function IndividualCreateCompany() {
         generateDocument: generateDocument
       });
     } else {
-      await axios.post("http://127.0.0.1:5000/createcompany", {
+      await axios.post("http://127.0.0.1:3000/createcompany", {
         rfc: rfc,
         nombre: nombre,
         ciec: ciec,
@@ -105,7 +105,7 @@ export default function IndividualCreateCompany() {
     dispatch(setLoading(true));
 
     const dataExcel = await axios.post(
-      "http://127.0.0.1:5000/extractdataexcel",
+      "http://127.0.0.1:3000/extractdataexcel",
       {
         file: fileData,
       },
@@ -202,7 +202,7 @@ export default function IndividualCreateCompany() {
                     />
                     <BackupIcon />
                   </IconButton>
-                  <Button variant="contained" disabled={fileData === null} onClick={extractDataExcel}>
+                  <Button variant="contained" disabled={!fileData} onClick={extractDataExcel}>
                     Cargar
                   </Button>
                   {dataCompanies.length > 0 ? (
